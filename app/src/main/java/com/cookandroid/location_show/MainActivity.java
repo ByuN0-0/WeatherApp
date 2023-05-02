@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -39,8 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
 
-    double latitude = 37.6168328;
-    double longitude = 127.1055345;
+    //double latitude = 37.6168328;
+    //double longitude = 127.1055345;
 
     private GeoMapApi Geoapi; //Geocoding API
     String apiKey = "163034e395f4430a30d20336ccc67b22";
@@ -69,6 +70,7 @@ public class MainActivity extends TabActivity {
         //loadWeatherData(latitude, longitude);
         //loadWeatherForecastData(latitude, longitude);
         //loadAirPollutionData(latitude, longitude);
+        System.out.print("정상 실행됨!!");
 
         temperatureTextView = findViewById(R.id.temperature_text_view); //온도 텍스트뷰
         locationLatitude = findViewById(R.id.location_latitude); //위도
@@ -86,10 +88,13 @@ public class MainActivity extends TabActivity {
 
         scRollTimeWeather = (LinearLayout) findViewById(R.id.scRollTimeWeather);
         scRollDayWeather = (LinearLayout) findViewById(R.id.scRollDayweather);
-
-        svWidget = scrollViewinit.getInstance();
-        svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
-        svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+        try {
+            svWidget = scrollViewinit.getInstance();
+            svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
+            svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+        }catch(NullPointerException e){
+            Log.e("null","sv = null");
+        }
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -100,8 +105,8 @@ public class MainActivity extends TabActivity {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 //            String provider = location.getProvider();
 //            double altitude = location.getAltitude();
-//            double longitude = location.getLongitude();
-//            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
 
             loadWeatherData(latitude,longitude);
             loadWeatherForecastData(latitude, longitude);
@@ -109,6 +114,7 @@ public class MainActivity extends TabActivity {
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
         }
+
     }
     private void loadWeatherData(double latitude, double longitude) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
@@ -116,13 +122,8 @@ public class MainActivity extends TabActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        Retrofit retroGeoApi = new Retrofit.Builder()
-                .baseUrl("http://api.openweathermap.org/geo/1.0/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
         // retrofit 라이브러리 초기화
         CWmapApi CWapi = retroCurrentWeatherApi.create(CWmapApi.class);
-        Geoapi = retroGeoApi.create(GeoMapApi.class);
 
         Call<CurrentWeatherResponse> CWcall = CWapi.getCurrentWeather(latitude, longitude, apiKey, units, apilang);
         // 초기화한 라이브러리로 call 객체에 api JSON파일을 가져옴

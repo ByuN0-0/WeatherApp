@@ -31,7 +31,7 @@ public class scrollViewinit {
 
     public void addView(MainActivity mainActivity, LinearLayout scRoll, int index){
         if(index == 0){
-            TimeWeaterWidgetInit(mainActivity, "");
+            TimeWeatherWidgetInit(mainActivity, "");
             for(LinearLayout L : TimeWeather_Lay)
                 scRoll.addView(L);
         } else if(index == 1){
@@ -178,12 +178,12 @@ public class scrollViewinit {
 
     public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll, String presentWeather){
         scRoll.removeAllViews();
-        TimeWeaterWidgetInit(mainActivity, presentWeather);
+        TimeWeatherWidgetInit(mainActivity, presentWeather);
         for(LinearLayout L : TimeWeather_Lay)
             scRoll.addView(L);
     }
 
-    private LinearLayout[] TimeWeaterWidgetInit(MainActivity mainActivity, String presentWeather){
+    private LinearLayout[] TimeWeatherWidgetInit(MainActivity mainActivity, String presentWeather){
         presentTime = new SimpleDateFormat("HH").format(new Date());
         TimeWeather = new TextView[9];
         TimeWeather_Lay = new LinearLayout[9];
@@ -241,8 +241,8 @@ public class scrollViewinit {
             TimeWeather[i].setText(aMpM+(tmp2)+"시"+mainActivity.getString(R.string.lineSpace)+presentWeather+"℃");
             TimeWeather[i].setTextColor(Color.parseColor("#ffffff"));
             TimeWeather[i].setGravity(Gravity.CENTER|Gravity.TOP);
-            TimeWeather[i].setBackgroundResource(R.drawable.noimage|R.drawable.round_onlyborder);
-//            TimeWeather[i].setBackgroundColor(Color.parseColor("#ff0000"));
+//            TimeWeather[i].setBackgroundResource(R.drawable.noimage|R.drawable.round_onlyborder);
+            TimeWeather[i].setBackgroundColor(Color.parseColor("#ff0000"));
             TimeWeather[i].setPadding(5,5,5,5);
 
             TimeWeather_Lay[i] = new LinearLayout(mainActivity.getApplicationContext());
@@ -256,6 +256,7 @@ public class scrollViewinit {
         return TimeWeather_Lay;
     }
 }
+
 /*
 import android.graphics.Color;
 import android.view.Gravity;
@@ -286,7 +287,7 @@ public class scrollViewinit {
 
     public void addView(MainActivity mainActivity, LinearLayout scRoll, int index){
         if(index == 0){
-            TimeWeaterWidgetInit(mainActivity, "");
+            TimeWeatherWidgetInit(mainActivity, "");
             for(TextView t : TimeWeather)
                 scRoll.addView(t);
         } else if(index == 1){
@@ -358,12 +359,12 @@ public class scrollViewinit {
 
     public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll, String presentWeather){
         scRoll.removeAllViews();
-        TimeWeaterWidgetInit(mainActivity, presentWeather);
+        TimeWeatherWidgetInit(mainActivity, presentWeather);
         for(TextView t : TimeWeather)
             scRoll.addView(t);
     }
 
-    private TextView[] TimeWeaterWidgetInit(MainActivity mainActivity, String presentWeather){
+    private TextView[] TimeWeatherWidgetInit(MainActivity mainActivity, String presentWeather){
         presentTime = new SimpleDateFormat("HH").format(new Date());
         TimeWeather = new TextView[9];
         int tmp1 = 0;
@@ -425,5 +426,4 @@ public class scrollViewinit {
         }
         return TimeWeather;
     }
-}
-*/
+}*/
