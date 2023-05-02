@@ -40,8 +40,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
 
-    //double latitude = 37.6168328;
-    //double longitude = 127.1055345;
+    double latitude = 37.6168328;
+    double longitude = 127.1055345;
 
     private GeoMapApi Geoapi; //Geocoding API
     String apiKey = "163034e395f4430a30d20336ccc67b22";
@@ -67,9 +67,9 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //loadWeatherData(latitude, longitude);
-        //loadWeatherForecastData(latitude, longitude);
-        //loadAirPollutionData(latitude, longitude);
+        loadWeatherData(latitude, longitude);
+        loadWeatherForecastData(latitude, longitude);
+        loadAirPollutionData(latitude, longitude);
         System.out.print("정상 실행됨!!");
 
         temperatureTextView = findViewById(R.id.temperature_text_view); //온도 텍스트뷰
@@ -88,13 +88,11 @@ public class MainActivity extends TabActivity {
 
         scRollTimeWeather = (LinearLayout) findViewById(R.id.scRollTimeWeather);
         scRollDayWeather = (LinearLayout) findViewById(R.id.scRollDayweather);
-        try {
-            svWidget = scrollViewinit.getInstance();
-            svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
-            svWidget.addView(MainActivity.this, scRollDayWeather, 1);
-        }catch(NullPointerException e){
-            Log.e("null","sv = null");
-        }
+
+        svWidget = scrollViewinit.getInstance();
+        svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
+        svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+        /*
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -113,7 +111,7 @@ public class MainActivity extends TabActivity {
             loadAirPollutionData(latitude, longitude);
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
-        }
+        }*/
 
     }
     private void loadWeatherData(double latitude, double longitude) {
