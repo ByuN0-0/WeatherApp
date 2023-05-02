@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@android:id/tabhost"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity">
+
+<LinearLayout
+    android:id="@+id/linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <FrameLayout
+        android:id="@android:id/tabcontent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/foreCast"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:orientation="vertical">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/scRollDayweather">
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/weatherNow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/night"
+            android:orientation="vertical">
+
+            <!-- 첫 번째 화면 상단 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/t1"
+                    android:text="2222-00.00.??00:00:00"
+                    android:textSize="35sp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/location_latitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="location default text"
+                    android:textSize="30sp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/location_longitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="location default text"
+                    android:textSize="30sp"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/temperature_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="temperature default text"
+                    android:textSize="30sp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/location_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="location default text"
+                    android:textSize="30sp"
+                    android:textColor="@color/white"/>
+                <TextView
+                    android:id="@+id/test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="default test"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <!-- 첫 번째 화면 하단 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="aa ?시~aa ?시에 xx 상태가, aa ?시에 한때 xx 상태가 예상됩니다."
+                    android:textSize="25sp"
+                    android:textColor="@color/white"/>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:id="@+id/scRollTimeWeather"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="xxxxxx날씨"
+                    android:textColor="@color/white"
+                    android:textSize="35sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/airPollution"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f000ff"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Etc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0000ff"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/test1"
+                android:text="default text!!!!"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/test2"
+                android:text="default text!!!!"></TextView>
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <TabWidget
+        android:id="@android:id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TabWidget>
+
+</LinearLayout>
+
+</TabHost>
