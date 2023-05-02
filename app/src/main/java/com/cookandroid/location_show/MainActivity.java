@@ -108,29 +108,33 @@ public class MainActivity extends TabActivity {
         }
         else{
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location==null){
+                double latitude = 37.6168328;
+                double longitude = 127.1055345;
+            }
+            else {
 //          String provider = location.getProvider();
 //          double altitude = location.getAltitude();
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+            }
+                svWidget = scrollViewinit.getInstance();
+                svWidget.setLoc(latitude, longitude);
+                svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
+                svWidget.addView(MainActivity.this, scRollDayWeather, 1);
 
-            svWidget = scrollViewinit.getInstance();
-            svWidget.setLoc(latitude,longitude);
-            svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
-            svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+                String strlat = String.format("%.4f", latitude);
+                String strlon = String.format("%.4f", longitude);
 
-            String strlat = String.format("%.4f", latitude);
-            String strlon = String.format("%.4f", longitude);
+                locationLatitude.setText("위도" + strlat);
+                locationLongitude.setText("경도" + strlon);
 
-            locationLatitude.setText("위도" + strlat);
-            locationLongitude.setText("경도" + strlon);
-
-            loadWeatherData(latitude,longitude);
-            loadWeatherForecastData(latitude, longitude);
-            loadAirPollutionData(latitude, longitude);
-            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
+                loadWeatherData(latitude, longitude);
+                loadWeatherForecastData(latitude, longitude);
+                loadAirPollutionData(latitude, longitude);
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
         }
-
     }
     public void loadWeatherData(double latitude, double longitude) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
