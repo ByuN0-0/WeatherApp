@@ -1,25 +1,62 @@
 package com.cookandroid.location_show;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class scrollViewinit {
     private static scrollViewinit Instance;
-    String presentTime, presentDay;
+    private double latitude, longitude;
+    String presentTime, presentDay, presentWeather;
     LinearLayout[] TimeWeather_Lay, TimeWeather_InsideLay, DayWeather_Lay, DayWeather_InsideLay;
     TextView[] TimeWeather, DayWeather;
     String aMpM;
+    String presentTemp = "";
+    String currentIco = "";
+    String[] weatherList = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
+    double[] tempList = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    String[] icoList = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
     int DayOfWeekIndex;
-    String[] DayOfWeek = {"일","월","화","수","목","금","토"};
+    String[] DayOfWeek = {"","일","월","화","수","목","금","토"};
 
     private scrollViewinit(){}
-
+    public void setLoc(double lat, double lon){
+        latitude = lat;
+        longitude = lon;
+    }
+    public void setPresentWeather(String pweather){
+        presentWeather = pweather;
+    }
+    public void setPresentTemp(String temp){
+        presentTemp = temp;
+    }
+    public void setTempList(double[] templist){
+        tempList=templist;
+    }
+    public void setIcoList(String[] icolist){
+        icoList=icolist;
+    }
+    public void setCurrentIco(String icon) {
+        currentIco = icon;
+    }
+    public void setWeatherList(String[] weatherlist){
+        weatherList = weatherlist;
+    }
     public static scrollViewinit getInstance(){
         if(Instance == null){
             synchronized (scrollViewinit.class){
@@ -31,23 +68,26 @@ public class scrollViewinit {
 
     public void addView(MainActivity mainActivity, LinearLayout scRoll, int index){
         if(index == 0){
-            TimeWeaterWidgetInit(mainActivity, "");
+            TimeWeatherWidgetInit(mainActivity);
             for(LinearLayout L : TimeWeather_Lay)
                 scRoll.addView(L);
         } else if(index == 1){
-            DayWeatherWidgetInit(mainActivity, "");
+            DayWeatherWidgetInit(mainActivity);
             for(LinearLayout L : DayWeather_Lay)
                 scRoll.addView(L);
             //Todo
         }
     }
 
-    private LinearLayout[] DayWeatherWidgetInit(MainActivity mainActivity, String Weather){
+    private LinearLayout[] DayWeatherWidgetInit(MainActivity mainActivity){
         presentDay = new SimpleDateFormat("E").format(new Date());       //일주일 중 무슨 요일인지 또는 일주일 중 몇 번째 요일인지 또는 한달 중 몇일인지 포맷 변경 가능
         DayWeather_Lay = new LinearLayout[10];
         DayWeather_InsideLay = new LinearLayout[4];
         DayWeather = new TextView[4];
-        DayOfWeekIndex = 0;
+        Calendar cal = Calendar.getInstance();
+        DayOfWeekIndex = cal.get(Calendar.DAY_OF_WEEK);
+        double DOWI = DayOfWeekIndex;
+        if (aMpM.equals("오후")){ DOWI += 0.6; }
 //        for(int i = 0; i < DayOfWeek.length; i++){
 //            if(presentDay.equals(DayOfWeek[i])) break;
 //            DayOfWeekIndex++;
@@ -59,7 +99,9 @@ public class scrollViewinit {
                 DayWeather_InsideLay[j] = new LinearLayout(mainActivity.getApplicationContext());
                 DayWeather[j] = new TextView(mainActivity.getApplicationContext());
                 if(j == 0){
-                    DayWeather[j].setText(presentDay+"요일");
+                    DayWeather[j].setText(DayOfWeek[(int)DOWI]+"요일");
+                    DOWI += 0.5;
+                    if(DOWI>7.7){ DOWI=1; }
                     DayWeather[j].setBackgroundColor(Color.parseColor("#ff0000"));
                     DayWeather[j].setTextSize(20);
                     DayWeather[j].setTextColor(Color.parseColor("#ffffff"));
@@ -82,8 +124,10 @@ public class scrollViewinit {
 
                 } else if(j == 1){
                     DayWeather[j].setText("image");
-//                    DayWeather[j].setBackgroundColor(Color.parseColor("#00ff00"));
                     DayWeather[j].setBackgroundResource(R.drawable.noimage);
+//                    DayWeather[j].setBackgroundColor(Color.parseColor("#00ff00"));
+                    if(i==0){ loadImage(DayWeather[j], currentIco); }
+                    else{ loadImage(DayWeather[j], icoList[i*4]); }
                     DayWeather[j].setTextSize(20);
                     DayWeather[j].setTextColor(Color.parseColor("#000000"));
                     DayWeather[j].setGravity(Gravity.CENTER);
@@ -105,6 +149,8 @@ public class scrollViewinit {
 
                 } else if(j == 2){
                     DayWeather[j].setText("날씨");
+                    if(i==0){ DayWeather[j].setText(presentWeather); }
+                    else{ DayWeather[j].setText(weatherList[i*4]); }
                     DayWeather[j].setBackgroundColor(Color.parseColor("#964b00"));
                     DayWeather[j].setTextSize(20);
                     DayWeather[j].setTextColor(Color.parseColor("#ffffff"));
@@ -128,7 +174,9 @@ public class scrollViewinit {
                     DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round);
 
                 } else if(j == 3){
-                    DayWeather[j].setText(Weather+"℃");
+                    DayWeather[j].setText("℃"); //Todo
+                    if(i==0){ DayWeather[j].setText(presentTemp+"℃"); }
+                    else{ DayWeather[j].setText(tempList[i*4]+"℃"); }
                     DayWeather[j].setBackgroundColor(Color.parseColor("#0000ff"));
                     DayWeather[j].setTextSize(20);
                     DayWeather[j].setTextColor(Color.parseColor("#ffffff"));
@@ -177,7 +225,7 @@ public class scrollViewinit {
 
     }
 
-    private LinearLayout[] TimeWeaterWidgetInit(MainActivity mainActivity, String presentWeather){
+    private LinearLayout[] TimeWeatherWidgetInit(MainActivity mainActivity){
         presentTime = new SimpleDateFormat("HH").format(new Date());
         TimeWeather = new TextView[3];
         TimeWeather_InsideLay = new LinearLayout[3];
@@ -258,6 +306,8 @@ public class scrollViewinit {
                     TimeWeather[j].setText("image");
 //                    TimeWeather[j].setTextColor(Color.parseColor("#000000"));
                     TimeWeather[j].setBackgroundResource(R.drawable.noimage);
+                    if(i==0){ loadImage(TimeWeather[j], currentIco); }
+                    else{ loadImage(TimeWeather[j], icoList[i-1]); }
                     TimeWeather[j].setGravity(Gravity.CENTER);
 //                    TimeWeather[j].setPadding(5,5,5,5);
                     LinearLayout.LayoutParams LPS2 = new LinearLayout.LayoutParams(
@@ -276,7 +326,8 @@ public class scrollViewinit {
                 }
 
                 else if(j == 2){
-                    TimeWeather[j].setText(presentWeather+"℃");
+                    if (i==0) { TimeWeather[j].setText(presentTemp+"℃"); }
+                    else{ TimeWeather[j].setText(tempList[i-1]+"℃"); }
                     TimeWeather[j].setTextColor(Color.parseColor("#ffffff"));
 //                    TimeWeather[j].setBackgroundColor(Color.parseColor("#000000"));
 //                    TimeWeather[j].setPadding(5,5,5,5);
@@ -312,18 +363,35 @@ public class scrollViewinit {
         return TimeWeather_Lay;
     }
 
-    public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll, String presentWeather){
+    public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll){ //Todo
         scRoll.removeAllViews();
-        TimeWeaterWidgetInit(mainActivity, presentWeather);
+        TimeWeatherWidgetInit(mainActivity); //Todo
         for(LinearLayout L : TimeWeather_Lay)
             scRoll.addView(L);
     }
 
-    public void DayWeatherReload(MainActivity mainActivity, LinearLayout scRoll, String futureWeather){
+    public void DayWeatherReload(MainActivity mainActivity, LinearLayout scRoll){
         scRoll.removeAllViews();
-        DayWeatherWidgetInit(mainActivity, futureWeather);
+        DayWeatherWidgetInit(mainActivity);
         for(LinearLayout L : DayWeather_Lay)
             scRoll.addView(L);
+    }
+    public void loadImage(TextView tv, String iconUrl){
+        String url = "https://openweathermap.org/img/w/"+iconUrl+".png";
+        tv.setText("");
+        Glide.with(tv.getContext()).load(url).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                tv.setBackground(resource);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+            }
+        });
+        tv.setWidth(150);
+        tv.setHeight(150);
     }
 }
 

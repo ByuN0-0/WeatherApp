@@ -7,17 +7,19 @@ import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
+
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,7 +45,6 @@ public class MainActivity extends TabActivity {
     double latitude = 37.6168328;
     double longitude = 127.1055345;
 
-    private GeoMapApi Geoapi; //Geocoding API
     String apiKey = "163034e395f4430a30d20336ccc67b22";
     String units = "metric";
     String apilang = "kr";
@@ -55,8 +56,6 @@ public class MainActivity extends TabActivity {
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
     TextView DemonTime;
     String allDay;
-    private TextView testview;
-
     LinearLayout scRollTimeWeather, scRollDayWeather;
     scrollViewinit svWidget;
     private TextView test1;
@@ -67,9 +66,7 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadWeatherData(latitude, longitude);
-        loadWeatherForecastData(latitude, longitude);
-        loadAirPollutionData(latitude, longitude);
+
         System.out.print("정상 실행됨!!");
 
         temperatureTextView = findViewById(R.id.temperature_text_view); //온도 텍스트뷰
@@ -78,21 +75,31 @@ public class MainActivity extends TabActivity {
         locationDescription = findViewById(R.id.location_description); //날씨 텍스트뷰
         test1 = findViewById(R.id.test1);
         test2 = findViewById(R.id.test2);
-        testview = findViewById(R.id.test);
 
-        DemonTime = (TextView) findViewById(R.id.t1);
+        DemonTime = findViewById(R.id.t1);
 
         ShowTimeMethod();
         initMainView init = initMainView.getInstance();
         init.initView(this);
 
-        scRollTimeWeather = (LinearLayout) findViewById(R.id.scRollTimeWeather);
-        scRollDayWeather = (LinearLayout) findViewById(R.id.scRollDayweather);
-
+        scRollTimeWeather = findViewById(R.id.scRollTimeWeather);
+        scRollDayWeather = findViewById(R.id.scRollDayweather);
+/*
         svWidget = scrollViewinit.getInstance();
+        svWidget.setLoc(latitude,longitude);
         svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
         svWidget.addView(MainActivity.this, scRollDayWeather, 1);
-        /*
+
+        String strlat = String.format("%.4f", latitude);
+        String strlon = String.format("%.4f", longitude);
+
+        locationLatitude.setText("위도" + strlat);
+        locationLongitude.setText("경도" + strlon);
+
+        loadWeatherData(latitude,longitude);
+        loadWeatherForecastData(latitude, longitude);
+        loadAirPollutionData(latitude, longitude);
+        */
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -101,20 +108,31 @@ public class MainActivity extends TabActivity {
         }
         else{
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//            String provider = location.getProvider();
-//            double altitude = location.getAltitude();
-            double longitude = location.getLongitude();
+//          String provider = location.getProvider();
+//          double altitude = location.getAltitude();
             double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            svWidget = scrollViewinit.getInstance();
+            svWidget.setLoc(latitude,longitude);
+            svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
+            svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+
+            String strlat = String.format("%.4f", latitude);
+            String strlon = String.format("%.4f", longitude);
+
+            locationLatitude.setText("위도" + strlat);
+            locationLongitude.setText("경도" + strlon);
 
             loadWeatherData(latitude,longitude);
             loadWeatherForecastData(latitude, longitude);
             loadAirPollutionData(latitude, longitude);
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
-        }*/
+        }
 
     }
-    private void loadWeatherData(double latitude, double longitude) {
+    public void loadWeatherData(double latitude, double longitude) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -132,12 +150,13 @@ public class MainActivity extends TabActivity {
                 if (response.isSuccessful()) {
                     double temperature = response.body().getWeatherData().getTemperature();
                     String descriptionString = response.body().getWeatherList().get(0).getDescription();
+                    String icon = response.body().getWeatherList().get(0).getIcon();
                     String temperatureString = String.format("%.1f", temperature);
                     locationDescription.setText("현재 날씨는 " + descriptionString);
-                    locationLatitude.setText("위도" + latitude);
-                    locationLongitude.setText("경도" + longitude);
                     temperatureTextView.setText(temperatureString + "℃");
-                    svWidget.TimeWeatherReload(MainActivity.this, scRollTimeWeather, temperatureString);
+                    svWidget.setPresentWeather(descriptionString);
+                    svWidget.setCurrentIco(icon);
+                    svWidget.setPresentTemp(temperatureString);
                 }
             }
 
@@ -154,7 +173,7 @@ public class MainActivity extends TabActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WFmapApi WFapi = retroWFapi.create(WFmapApi.class);
-        Call<WeatherForecastResponse> WFcall = WFapi.getWf(latitude, longitude, apiKey, units);
+        Call<WeatherForecastResponse> WFcall = WFapi.getWf(latitude, longitude, apiKey, units, apilang);
         WFcall.enqueue(new Callback<WeatherForecastResponse>() {
             @Override
             public void onResponse(Call<WeatherForecastResponse> call, Response<WeatherForecastResponse> response) {
@@ -164,6 +183,22 @@ public class MainActivity extends TabActivity {
                     String dttxt = response.body().getForecastList().get(0).getDt_txt();
                     String iconUrl = response.body().getForecastList().get(0).getWeatherList().get(0).getIcon();
                     loadImage(test2, iconUrl);
+                    double[] tempList = new double[40];
+                    String[] icoList = new String[40];
+                    String[] weatherList = new String[40];
+                    for(int i=0;i<40;i++){
+                        tempList[i]= response.body().getForecastList().get(i).getMain().getTemperature();
+                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
+                        weatherList[i] = response.body().getForecastList().get(i).getWeatherList().get(0).getDescription();
+                    }
+                    for(int i=0;i<40;i++){
+                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
+                    }
+                    svWidget.setTempList(tempList);
+                    svWidget.setIcoList(icoList);
+                    svWidget.setWeatherList(weatherList);
+                    svWidget.TimeWeatherReload(MainActivity.this, scRollTimeWeather);
+                    svWidget.DayWeatherReload(MainActivity.this, scRollDayWeather);
                     //test1.setText(String.format("%.1f'C", temp));
 
                 }
@@ -223,7 +258,9 @@ public class MainActivity extends TabActivity {
 //            double altitude = location.getAltitude();
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
-            loadWeatherData(latitude,longitude);
+            loadWeatherData(latitude, longitude);
+            loadAirPollutionData(latitude, longitude);
+            loadAirPollutionData(latitude, longitude);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
