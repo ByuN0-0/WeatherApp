@@ -12,5 +12,11 @@ public interface GeoMapApi {
          @Query("appid") String apiKey
 
     );
-}
 
+    @GET("reverse")
+    Call<GeoResponse> getReGeo(
+            @Query("lat") double lat,
+            @Query("lon") double lon,
+            @Query("appid") String apiKey
+    );
+}

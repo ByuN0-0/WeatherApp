@@ -64,6 +64,8 @@ public class MainActivity extends TabActivity {
     @SuppressLint({"MissingInflatedId","deprecation"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        double latitude;
+        double longitude;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -84,22 +86,7 @@ public class MainActivity extends TabActivity {
 
         scRollTimeWeather = findViewById(R.id.scRollTimeWeather);
         scRollDayWeather = findViewById(R.id.scRollDayweather);
-/*
-        svWidget = scrollViewinit.getInstance();
-        svWidget.setLoc(latitude,longitude);
-        svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
-        svWidget.addView(MainActivity.this, scRollDayWeather, 1);
 
-        String strlat = String.format("%.4f", latitude);
-        String strlon = String.format("%.4f", longitude);
-
-        locationLatitude.setText("위도" + strlat);
-        locationLongitude.setText("경도" + strlon);
-
-        loadWeatherData(latitude,longitude);
-        loadWeatherForecastData(latitude, longitude);
-        loadAirPollutionData(latitude, longitude);
-        */
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -109,31 +96,33 @@ public class MainActivity extends TabActivity {
         else{
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location==null){
-                double latitude = 37.6168328;
-                double longitude = 127.1055345;
+                latitude = 37.6168328;
+                longitude = 127.1055345;
             }
             else {
-//          String provider = location.getProvider();
-//          double altitude = location.getAltitude();
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
+//              String provider = location.getProvider(); 현재 사용안함
+//              double altitude = location.getAltitude(); 현재 사용안함
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
             }
-                svWidget = scrollViewinit.getInstance();
-                svWidget.setLoc(latitude, longitude);
-                svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
-                svWidget.addView(MainActivity.this, scRollDayWeather, 1);
+            // 스크롤뷰 위젯 생성
+            svWidget = scrollViewinit.getInstance();
+            svWidget.setLoc(latitude, longitude);
+            svWidget.addView(MainActivity.this, scRollTimeWeather, 0);
+            svWidget.addView(MainActivity.this, scRollDayWeather, 1);
 
-                String strlat = String.format("%.4f", latitude);
-                String strlon = String.format("%.4f", longitude);
+            String strlat = String.format("%.4f", latitude);
+            String strlon = String.format("%.4f", longitude);
 
-                locationLatitude.setText("위도" + strlat);
-                locationLongitude.setText("경도" + strlon);
+            locationLatitude.setText("위도" + strlat);
+            locationLongitude.setText("경도" + strlon);
 
-                loadWeatherData(latitude, longitude);
-                loadWeatherForecastData(latitude, longitude);
-                loadAirPollutionData(latitude, longitude);
-                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
-                lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
+            loadWeatherData(latitude, longitude);
+            loadWeatherForecastData(latitude, longitude);
+            loadAirPollutionData(latitude, longitude);
+
+            lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
         }
     }
     public void loadWeatherData(double latitude, double longitude) {
