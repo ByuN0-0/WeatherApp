@@ -2,7 +2,6 @@ package com.cookandroid.location_show;
 
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
@@ -10,7 +9,6 @@ import android.app.TabActivity;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 
@@ -20,12 +18,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -42,10 +37,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
-
-    double latitude = 37.6168328;
-    double longitude = 127.1055345;
-
     String apiKey = "163034e395f4430a30d20336ccc67b22";
     String units = "metric";
     String apilang = "kr";
@@ -68,7 +59,6 @@ public class MainActivity extends TabActivity {
     LinearLayout scRollTimeWeather, scRollDayWeather;
     scrollViewinit svWidget;
     private TextView test1;
-    private TextView test2;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast"})
     @Override
@@ -85,7 +75,6 @@ public class MainActivity extends TabActivity {
         locationLongitude = findViewById(R.id.location_longitude); //경도
         locationDescription = findViewById(R.id.location_description); //날씨 텍스트뷰
         test1 = findViewById(R.id.test1);
-        test2 = findViewById(R.id.test2);
         locationText = findViewById(R.id.locationText);
         forecastText = findViewById(R.id.forecastText);
         DemonTime = findViewById(R.id.t1);
@@ -188,9 +177,6 @@ public class MainActivity extends TabActivity {
             public void onResponse(Call<WeatherForecastResponse> call, Response<WeatherForecastResponse> response) {
                 // api 호출 성공
                 if (response.isSuccessful()) {
-                    double temp = response.body().getForecastList().get(0).getMain().getTemperature();
-                    String dttxt = response.body().getForecastList().get(0).getDt_txt();
-                    String iconUrl = response.body().getForecastList().get(0).getWeatherList().get(0).getIcon();
                     double[] tempList = new double[40];
                     String[] icoList = new String[40];
                     String[] weatherList = new String[40];
@@ -244,6 +230,7 @@ public class MainActivity extends TabActivity {
                     O3Text.setText(String.format("%.2fμg/m3",O3));
                     pm10Text.setText(String.format("%.2fμg/m3",pm10));
                     pm2_5Text.setText(String.format("%.2fμg/m3",pm2_5));
+
                 }
             }
 
@@ -267,9 +254,8 @@ public class MainActivity extends TabActivity {
             @Override
             public void onResponse(Call<List<GeoResponse>> call, Response<List<GeoResponse>> response) {
                 if (response.isSuccessful()) {
-                    String loc = "~~";
-                    loc = response.body().get(0).getLocalName().getLocal_ko();
-                    locationText.setText(loc + " 날씨");
+                    String koloc = response.body().get(0).getLocalName().getLocal_ko();
+                    locationText.setText(koloc + " 날씨");
                 }
             }
 
@@ -299,8 +285,8 @@ public class MainActivity extends TabActivity {
 
     final LocationListener gpsLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-//            String provider = location.getProvider();
-//            double altitude = location.getAltitude();
+            //String provider = location.getProvider();
+            //double altitude = location.getAltitude();
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
             strlat = String.format("%.4f", latitude);
@@ -339,6 +325,7 @@ public class MainActivity extends TabActivity {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
+                        Log.e("error","interruptedexception");
                     }
                     handler.sendEmptyMessage(1);
                 }
@@ -359,10 +346,10 @@ public class MainActivity extends TabActivity {
                 snow = true;
             }
         }
-        if ((rain || snow) == true) {
-            if (rain && snow == true) {
+        if (rain || snow) {
+            if (rain && snow) {
                 forecastText.setText("오늘 한때 눈이나 비가 예상됩니다.");
-            } else if (rain == true) {
+            } else if (rain) {
                 forecastText.setText("오늘 한때 비가 예상됩니다.");
             } else {
                 forecastText.setText("오늘 한때 눈이 예상됩니다.");
