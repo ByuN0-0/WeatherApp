@@ -56,10 +56,10 @@ public class MainActivity extends TabActivity {
     private TextView locationText;
     private TextView forecastText;
     private TextView airqualityText;
-    private TextView layoutCO;
-    private TextView layoutO3;
-    private TextView layoutpm10;
-    private TextView layoutpm2_5;
+    private TextView COText;
+    private TextView O3Text;
+    private TextView pm10Text;
+    private TextView pm2_5Text;
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
     TextView DemonTime;
     String allDay;
@@ -90,11 +90,10 @@ public class MainActivity extends TabActivity {
         forecastText = findViewById(R.id.forecastText);
         DemonTime = findViewById(R.id.t1);
         airqualityText = findViewById(R.id.airquality_text);
-        //layoutCO = findViewById(R.id.Layout_CO);
-        //layoutO3 = findViewById(R.id.Layout_O3);
-        //layoutpm10 = findViewById(R.id.Layout_pm10);
-        //layoutpm2_5 = findViewById(R.id.Layout_pm2_5);
-        //layoutpm2_5.setText("hi");
+        COText = findViewById(R.id.COtext);
+        O3Text = findViewById(R.id.O3text);
+        pm10Text = findViewById(R.id.pm10text);
+        pm2_5Text = findViewById(R.id.pm2_5text);
 
         ShowTimeMethod();
         initMainView init = initMainView.getInstance();
@@ -236,7 +235,15 @@ public class MainActivity extends TabActivity {
                 // api 호출 성공
                 if (response.isSuccessful()) {
                     int aqi = response.body().getAirList().get(0).getMain().getAqi();
+                    double CO = response.body().getAirList().get(0).getComp().getCo();
+                    double O3 = response.body().getAirList().get(0).getComp().getO3();
+                    double pm10 = response.body().getAirList().get(0).getComp().getPm10();
+                    double pm2_5 = response.body().getAirList().get(0).getComp().getPm2_5();
                     airqualityText.setText("미세먼지 농도: "+straqi(aqi));
+                    COText.setText(String.format("%.2fμg/m3",CO));
+                    O3Text.setText(String.format("%.2fμg/m3",O3));
+                    pm10Text.setText(String.format("%.2fμg/m3",pm10));
+                    pm2_5Text.setText(String.format("%.2fμg/m3",pm2_5));
                 }
             }
 
