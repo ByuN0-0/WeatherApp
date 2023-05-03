@@ -32,6 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import retrofit2.Call;
@@ -52,16 +53,24 @@ public class MainActivity extends TabActivity {
     private TextView locationLatitude;
     private TextView locationLongitude;
     private TextView locationDescription;
-
+    private TextView locationText;
+    private TextView forecastText;
+    private TextView airqualityText;
+    private TextView layoutCO;
+    private TextView layoutO3;
+    private TextView layoutpm10;
+    private TextView layoutpm2_5;
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
     TextView DemonTime;
     String allDay;
+    String strlat;
+    String strlon;
     LinearLayout scRollTimeWeather, scRollDayWeather;
     scrollViewinit svWidget;
     private TextView test1;
     private TextView test2;
 
-    @SuppressLint({"MissingInflatedId","deprecation"})
+    @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         double latitude;
@@ -77,8 +86,15 @@ public class MainActivity extends TabActivity {
         locationDescription = findViewById(R.id.location_description); //날씨 텍스트뷰
         test1 = findViewById(R.id.test1);
         test2 = findViewById(R.id.test2);
-
+        locationText = findViewById(R.id.locationText);
+        forecastText = findViewById(R.id.forecastText);
         DemonTime = findViewById(R.id.t1);
+        airqualityText = findViewById(R.id.airquality_text);
+        //layoutCO = findViewById(R.id.Layout_CO);
+        //layoutO3 = findViewById(R.id.Layout_O3);
+        //layoutpm10 = findViewById(R.id.Layout_pm10);
+        //layoutpm2_5 = findViewById(R.id.Layout_pm2_5);
+        //layoutpm2_5.setText("hi");
 
         ShowTimeMethod();
         initMainView init = initMainView.getInstance();
@@ -92,14 +108,12 @@ public class MainActivity extends TabActivity {
         if (Build.VERSION.SDK_INT >= 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             finish();
-        }
-        else{
+        } else {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if (location==null){
+            if (location == null) {
                 latitude = 37.6168328;
                 longitude = 127.1055345;
-            }
-            else {
+            } else {
 //              String provider = location.getProvider(); 현재 사용안함
 //              double altitude = location.getAltitude(); 현재 사용안함
                 latitude = location.getLatitude();
@@ -119,12 +133,14 @@ public class MainActivity extends TabActivity {
 
             loadWeatherData(latitude, longitude);
             loadWeatherForecastData(latitude, longitude);
-            loadAirPollutionData(latitude, longitude);
+            loadAirPollutionData(latitude, longitude); //Todo
+            loadGeoData(latitude, longitude);
 
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
         }
     }
+
     public void loadWeatherData(double latitude, double longitude) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
@@ -146,7 +162,7 @@ public class MainActivity extends TabActivity {
                     String icon = response.body().getWeatherList().get(0).getIcon();
                     String temperatureString = String.format("%.1f", temperature);
                     locationDescription.setText("현재 날씨는 " + descriptionString);
-                    temperatureTextView.setText(temperatureString + "℃");
+                    temperatureTextView.setText("현재 기온: "+ temperatureString + "℃");
                     svWidget.setPresentWeather(descriptionString);
                     svWidget.setCurrentIco(icon);
                     svWidget.setPresentTemp(temperatureString);
@@ -160,7 +176,8 @@ public class MainActivity extends TabActivity {
             }
         });
     }
-    private void loadWeatherForecastData(double latitude, double longitude){
+
+    private void loadWeatherForecastData(double latitude, double longitude) {
         Retrofit retroWFapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -175,18 +192,19 @@ public class MainActivity extends TabActivity {
                     double temp = response.body().getForecastList().get(0).getMain().getTemperature();
                     String dttxt = response.body().getForecastList().get(0).getDt_txt();
                     String iconUrl = response.body().getForecastList().get(0).getWeatherList().get(0).getIcon();
-                    loadImage(test2, iconUrl);
                     double[] tempList = new double[40];
                     String[] icoList = new String[40];
                     String[] weatherList = new String[40];
-                    for(int i=0;i<40;i++){
-                        tempList[i]= response.body().getForecastList().get(i).getMain().getTemperature();
-                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
+                    for (int i = 0; i < 40; i++) {
+                        tempList[i] = response.body().getForecastList().get(i).getMain().getTemperature();
+                        icoList[i] = response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
                         weatherList[i] = response.body().getForecastList().get(i).getWeatherList().get(0).getDescription();
                     }
-                    for(int i=0;i<40;i++){
-                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
+                    for (int i = 0; i < 40; i++) {
+                        icoList[i] = response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
                     }
+                    checkRain(icoList);
+
                     svWidget.setTempList(tempList);
                     svWidget.setIcoList(icoList);
                     svWidget.setWeatherList(weatherList);
@@ -200,11 +218,12 @@ public class MainActivity extends TabActivity {
             @Override
             public void onFailure(Call<WeatherForecastResponse> call, Throwable t) {
                 // API 호출 실패
-                test1.setText("api 호출 실패!!!"+ t.getMessage());
+                test1.setText("api 호출 실패!!!" + t.getMessage());
             }
         });
     }
-    private void loadAirPollutionData(double latitude, double longitude){
+
+    private void loadAirPollutionData(double latitude, double longitude) {
         Retrofit retroAPapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -217,17 +236,43 @@ public class MainActivity extends TabActivity {
                 // api 호출 성공
                 if (response.isSuccessful()) {
                     int aqi = response.body().getAirList().get(0).getMain().getAqi();
-                    test1.setText(Integer.toString(aqi));
-
+                    airqualityText.setText("미세먼지 농도: "+straqi(aqi));
                 }
             }
+
             @Override
             public void onFailure(Call<AirPollutionResponse> call, Throwable t) {
                 // API 호출 실패
-                test1.setText("api 호출 실패!!!"+ t.getMessage());
+                test1.setText("api 호출 실패!!!" + t.getMessage());
             }
         });
     }
+
+    private void loadGeoData(double latitude, double longitude) {
+        Retrofit retroGeoapi = new Retrofit.Builder()
+                .baseUrl("https://api.openweathermap.org/geo/1.0/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GeomapApi Geoapi = retroGeoapi.create(GeomapApi.class);
+
+        Call<List<GeoResponse>> Geocall = Geoapi.getReGeo(latitude, longitude, apiKey);
+        Geocall.enqueue(new Callback<List<GeoResponse>>() {
+            @Override
+            public void onResponse(Call<List<GeoResponse>> call, Response<List<GeoResponse>> response) {
+                if (response.isSuccessful()) {
+                    String loc = "~~";
+                    loc = response.body().get(0).getLocalName().getLocal_ko();
+                    locationText.setText(loc + " 날씨");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<GeoResponse>> call, Throwable t) {
+
+            }
+        });
+    }
+
     public String convertToLocal(String dt_txt) {
         String localTime = "";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -251,9 +296,14 @@ public class MainActivity extends TabActivity {
 //            double altitude = location.getAltitude();
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
+            strlat = String.format("%.4f", latitude);
+            strlon = String.format("%.4f", longitude);
+            locationLatitude.setText("위도" + strlat);
+            locationLongitude.setText("경도" + strlon);
             loadWeatherData(latitude, longitude);
+            loadWeatherForecastData(latitude, longitude);
             loadAirPollutionData(latitude, longitude);
-            loadAirPollutionData(latitude, longitude);
+            loadGeoData(latitude, longitude);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -266,8 +316,8 @@ public class MainActivity extends TabActivity {
         }
     };
 
-    public void ShowTimeMethod(){
-        final Handler handler = new Handler(){
+    public void ShowTimeMethod() {
+        final Handler handler = new Handler() {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 Date d = new Date();
@@ -278,10 +328,11 @@ public class MainActivity extends TabActivity {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                while(true){
-                    try{
+                while (true) {
+                    try {
                         Thread.sleep(1000);
-                    }catch (InterruptedException e){}
+                    } catch (InterruptedException e) {
+                    }
                     handler.sendEmptyMessage(1);
                 }
             }
@@ -289,21 +340,46 @@ public class MainActivity extends TabActivity {
         Thread thread = new Thread(task);
         thread.start();
     }
-    public void loadImage(TextView tv, String iconUrl){
-        String url = "https://openweathermap.org/img/w/"+iconUrl+".png";
-        tv.setText("");
-        Glide.with(MainActivity.this).load(url).into(new CustomTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                tv.setBackground(resource);
-            }
 
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-
+    public void checkRain(String[] weatherlist) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
+        boolean rain = false;
+        boolean snow = false;
+        for (int i = 0; i < 8; i++) {
+            if (weatherlist[i].equals("09d") || weatherlist[i].equals("10d") || weatherlist[i].equals("11d") || weatherlist[i].equals("09n") || weatherlist[i].equals("10n") || weatherlist[i].equals("11n")) {
+                rain = true;
             }
-        });
-        tv.setWidth(150);
-        tv.setHeight(150);
+            if (weatherlist[i].equals("13d") || weatherlist[i].equals("13n")) {
+                snow = true;
+            }
+        }
+        if ((rain || snow) == true) {
+            if (rain && snow == true) {
+                forecastText.setText("오늘 한때 눈이나 비가 예상됩니다.");
+            } else if (rain == true) {
+                forecastText.setText("오늘 한때 비가 예상됩니다.");
+            } else {
+                forecastText.setText("오늘 한때 눈이 예상됩니다.");
+            }
+        } else {
+            forecastText.setText("오늘은 눈이나 비가 예상되지 않습니다.");
+        }
+    }
+
+    public String straqi(int aqi) {
+        if (aqi == 1) {
+            return "아주좋음";
+        }
+        if (aqi == 2) {
+            return "좋음";
+        }
+        if (aqi == 3) {
+            return "보통";
+        }
+        if (aqi == 4) {
+            return "나쁨";
+        }
+        else{
+            return "아주나쁨";
+        }
     }
 }
