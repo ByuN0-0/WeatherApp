@@ -58,7 +58,6 @@ public class MainActivity extends TabActivity {
     String strlon;
     LinearLayout scRollTimeWeather, scRollDayWeather;
     scrollViewinit svWidget;
-    private TextView test1;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast"})
     @Override
@@ -74,7 +73,6 @@ public class MainActivity extends TabActivity {
         locationLatitude = findViewById(R.id.location_latitude); //위도
         locationLongitude = findViewById(R.id.location_longitude); //경도
         locationDescription = findViewById(R.id.location_description); //날씨 텍스트뷰
-        test1 = findViewById(R.id.test1);
         locationText = findViewById(R.id.locationText);
         forecastText = findViewById(R.id.forecastText);
         DemonTime = findViewById(R.id.t1);
@@ -203,7 +201,7 @@ public class MainActivity extends TabActivity {
             @Override
             public void onFailure(Call<WeatherForecastResponse> call, Throwable t) {
                 // API 호출 실패
-                test1.setText("api 호출 실패!!!" + t.getMessage());
+
             }
         });
     }
@@ -237,7 +235,7 @@ public class MainActivity extends TabActivity {
             @Override
             public void onFailure(Call<AirPollutionResponse> call, Throwable t) {
                 // API 호출 실패
-                test1.setText("api 호출 실패!!!" + t.getMessage());
+
             }
         });
     }
