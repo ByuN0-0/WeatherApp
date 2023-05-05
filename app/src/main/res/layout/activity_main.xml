@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:weightSum="10"
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -116,13 +117,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="aa ?시~aa ?시에 xx 상태가, aa ?시에 한때 xx 상태가 예상됩니다."
-                            android:textSize="20sp"
+                            android:textSize="25sp"
                             android:layout_weight="1"
 
                             android:textColor="@color/white"/>
                     </LinearLayout>
 
                     <HorizontalScrollView
+                        android:scrollbars="none"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:background="@drawable/square"
@@ -229,9 +231,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="오존 얘기"/>
-
                     </LinearLayout>
-
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"
@@ -267,7 +267,6 @@
                             android:layout_height="wrap_content"
                             android:text="pm 10 얘기"/>
                     </LinearLayout>
-
                 </LinearLayout>
                 <LinearLayout
                     android:layout_weight="1"
@@ -302,11 +301,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="pm2.5 얘기"/>
-
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
 
 
@@ -318,6 +314,7 @@
                 android:background="#000000"
                 android:orientation="vertical">
                 <ScrollView
+                    android:scrollbars="none"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <LinearLayout
@@ -325,7 +322,6 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:id="@+id/scRollDayweather">
-
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
@@ -337,6 +333,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:text="기타"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+                    />
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
@@ -348,8 +352,8 @@
                             android:layout_height="match_parent"
                             android:columnCount="2"
                             android:rowCount="5">
-                            <TextView
-                                android:id="@+id/test11"
+                            <LinearLayout
+                                android:id="@+id/etc1"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -357,16 +361,32 @@
                                 android:layout_column="0"
                                 android:layout_row="0"
                                 android:background="@drawable/round"
-                                android:text="TextView 1"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test22"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/sunset"
+                                    android:text="일몰"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center">
+                                </TextView>
+                                <TextView
+                                    android:id="@+id/sunrise"
+                                    android:text="일출"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc2"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -374,16 +394,32 @@
                                 android:layout_column="1"
                                 android:layout_row="0"
                                 android:background="@drawable/round"
-                                android:text="TextView 2"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test33"
+                                android:orientation="vertical"
+                                >
+                                <TextView
+                                    android:id="@+id/windDeg"
+                                    android:text="풍향"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                                <TextView
+                                    android:id="@+id/windSpeed"
+                                    android:text="풍속"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc3"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -391,16 +427,22 @@
                                 android:layout_column="0"
                                 android:layout_row="1"
                                 android:background="@drawable/round"
-                                android:text="TextView 3"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test44"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/rainAmount"
+                                    android:text="강우량"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc4"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -408,16 +450,22 @@
                                 android:layout_column="1"
                                 android:layout_row="1"
                                 android:background="@drawable/round"
-                                android:text="TextView 4"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test55"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/feelTemp"
+                                    android:text="체감온도"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc5"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -425,16 +473,23 @@
                                 android:layout_column="0"
                                 android:layout_row="2"
                                 android:background="@drawable/round"
-                                android:text="TextView 5"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test66"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/humidity"
+                                    android:text="습도"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc6"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -442,16 +497,22 @@
                                 android:layout_column="1"
                                 android:layout_row="2"
                                 android:background="@drawable/round"
-                                android:text="TextView 6"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test77"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/visibility"
+                                    android:text="가시거리"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc7"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -459,16 +520,22 @@
                                 android:layout_column="0"
                                 android:layout_row="3"
                                 android:background="@drawable/round"
-                                android:text="TextView 7"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
-                            <TextView
-                                android:id="@+id/test88"
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/clouds"
+                                    android:text="흐림도"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/etc8"
                                 android:layout_width="0dp"
                                 android:layout_height="200dp"
                                 android:layout_margin="5dp"
@@ -476,27 +543,33 @@
                                 android:layout_column="1"
                                 android:layout_row="3"
                                 android:background="@drawable/round"
-                                android:text="TextView 8"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:gravity="center"
                                 android:minHeight="0dp"
                                 android:minWidth="0dp"
                                 android:layout_gravity="fill_horizontal"
-                                />
+                                android:orientation="vertical">
+                                <TextView
+                                    android:id="@+id/pressure"
+                                    android:text="대기압"
+                                    android:layout_height="match_parent"
+                                    android:layout_width="match_parent"
+                                    android:layout_weight="1"
+                                    android:textColor="#ffffff"
+                                    android:textSize="20sp"
+                                    android:gravity="center"/>
+                            </LinearLayout>
                         </GridLayout>
                     </RelativeLayout>
                 </ScrollView>
             </LinearLayout>
-
         </FrameLayout>
 
         <TabWidget
+            android:layout_weight="9"
             android:id="@android:id/tabs"
+            android:weightSum="4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@drawable/round_onlyborder">
         </TabWidget>
-
     </LinearLayout>
-
 </TabHost>
