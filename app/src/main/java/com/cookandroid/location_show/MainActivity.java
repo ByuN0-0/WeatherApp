@@ -152,6 +152,18 @@ public class MainActivity extends TabActivity {
                     svWidget.setPresentWeather(descriptionString);
                     svWidget.setCurrentIco(icon);
                     svWidget.setPresentTemp(temperatureString);
+                    //기타창 변수세팅
+                    double feelTemp = response.body().getWeatherData().getFeeltemp();
+                    double humidity = response.body().getWeatherData().getHumidity();
+                    double pressure = response.body().getWeatherData().getPressure();
+                    double temp_min = response.body().getWeatherData().getTemp_min();
+                    double temp_max = response.body().getWeatherData().getTemp_max();
+                    double windSpeed = response.body().getWindData().getWindspeed();
+                    double windDeg = response.body().getWindData().getWinddeg();
+                    double clouds = response.body().getCloudData().getCloud();
+                    String sunrise = response.body().getSysdata().getSunrise();
+                    String sunset = response.body().getSysdata().getSunset();
+
                 }
             }
 
