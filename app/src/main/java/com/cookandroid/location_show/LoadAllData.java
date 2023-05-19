@@ -1,5 +1,7 @@
 package com.cookandroid.location_show;
 
+import android.opengl.Visibility;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -46,15 +48,7 @@ public class LoadAllData {
             public void onResponse(Call<CurrentWeatherResponse> call, Response<CurrentWeatherResponse> response) {
                 // api 호출 성공
                 if (response.isSuccessful()) {
-                    double temperature = response.body().getWeatherData().getTemperature();
-                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
-                    String icon = response.body().getWeatherList().get(0).getIcon();
-                    String temperatureString = String.format("%.1f", temperature);
-                    imView.setLocationDescription(descriptionString);
-                    imView.setTemperatureTextView(temperatureString);
-                    svWidget.setPresentWeather(descriptionString);
-                    svWidget.setCurrentIco(icon);
-                    svWidget.setPresentTemp(temperatureString);
+                    double temperature = response.body().getWeatherData().getTemperature(); //Todo
                     double feelTemp = response.body().getWeatherData().getFeeltemp();
                     double humidity = response.body().getWeatherData().getHumidity();
                     double pressure = response.body().getWeatherData().getPressure();
@@ -63,8 +57,43 @@ public class LoadAllData {
                     double windSpeed = response.body().getWindData().getWindspeed();
                     double windDeg = response.body().getWindData().getWinddeg();
                     double clouds = response.body().getCloudData().getCloud();
+                    double visibility = response.body().getVisibility();
+                    Double rainAmount;
+                    if(response.body() != null && response.body().getRaindata() != null){
+                        rainAmount = response.body().getRaindata().getRainAmount();
+                    }
+                    else {
+                        rainAmount = 0.0;
+                    }
                     String sunrise = response.body().getSysdata().getSunrise();
                     String sunset = response.body().getSysdata().getSunset();
+                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
+                    String icon = response.body().getWeatherList().get(0).getIcon();
+
+                    String temperatureString = String.format("%.1f", temperature);
+                    String windSpeedString = String.format("%.1f", windSpeed);
+                    String feelTempString = String.format("%.1f", feelTemp);
+                    String humidityString = String.format("%.1f", humidity);
+                    String visibilityString = String.format("%.1f", visibility);
+                    String cloudsString = String.format("%.1f", clouds);
+                    String pressureString = String.format("%.1f", pressure);
+                    String rainAmountString = String.format("%.0f", rainAmount);
+
+                    imView.setLocationDescription(descriptionString);
+                    imView.setTemperatureTextView(temperatureString);
+                    imView.setSunsetText(convertUnixTimeToKST(sunset));
+                    imView.setSunriseText(convertUnixTimeToKST(sunrise));
+                    imView.setWindSpeedText(windSpeedString);
+                    imView.setWindDegText(getDirection(windDeg));
+                    imView.setFeelTempText(feelTempString);
+                    imView.setHumidityText(humidityString);
+                    imView.setVisibilityText(visibilityString);
+                    imView.setCloudsText(cloudsString);
+                    imView.setPressureText(pressureString);
+                    imView.setRainAmountText(rainAmountString);
+                    svWidget.setPresentWeather(descriptionString);
+                    svWidget.setCurrentIco(icon);
+                    svWidget.setPresentTemp(temperatureString);
                 } else{
                     System.out.println("Response Fail");
                 }
@@ -139,12 +168,10 @@ public class LoadAllData {
                     double pm10 = response.body().getAirList().get(0).getComp().getPm10();
                     double pm2_5 = response.body().getAirList().get(0).getComp().getPm2_5();
                     imView.setAirqualityText(straqi(aqi));
-                    imView.setCOText(String.format("%.2fμg/m3",CO));
-                    imView.setO3Text(String.format("%.2fμg/m3",O3));
-                    imView.setPm10Text(String.format("%.2fμg/m3",pm10));
-                    imView.setPm2_5Text(String.format("%.2fμg/m3",pm2_5));
-//                    test1.setText(Integer.toString(aqi));
-
+                    imView.setCOText(String.format("%.1fμg/m3",CO));
+                    imView.setO3Text(String.format("%.1fμg/m3",O3));
+                    imView.setPm10Text(String.format("%.1fμg/m3",pm10));
+                    imView.setPm2_5Text(String.format("%.1fμg/m3",pm2_5));
                 }
             }
             @Override
@@ -173,12 +200,11 @@ public class LoadAllData {
                 if (response.isSuccessful()) {
                     String koloc = response.body().get(0).getLocalName().getLocal_ko();
                     imView.setLocationText(koloc);
+
                 }
             }
-
             @Override
             public void onFailure(Call<List<GeoResponse>> call, Throwable t) {
-
             }
         });
     }
@@ -231,38 +257,44 @@ public class LoadAllData {
     public String getDirection(double degree) {
         String direction;
         if (degree >= 22.5 && degree < 67.5) {
-            direction = "북동";
+            direction = "북동풍";
         } else if (degree >= 67.5 && degree < 112.5) {
-            direction = "동";
+            direction = "동풍";
         } else if (degree >= 112.5 && degree < 157.5) {
-            direction = "남동";
+            direction = "남동풍";
         } else if (degree >= 157.5 && degree < 202.5) {
-            direction = "남";
+            direction = "남풍";
         } else if (degree >= 202.5 && degree < 247.5) {
-            direction = "남서";
+            direction = "남서풍";
         } else if (degree >= 247.5 && degree < 292.5) {
-            direction = "서";
+            direction = "서풍";
         } else if (degree >= 292.5 && degree < 337.5) {
-            direction = "북서";
+            direction = "북서풍";
         } else {
-            direction = "북";
+            direction = "북풍";
         }
         return direction;
     }
-    public String convertToLocal(String dt_txt) {
-        String localTime = "";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static String convertUnixTimeToKST(String unixTimeString) {
+        long unixTime = 0;
         try {
-            Date dateUtcTime = dateFormat.parse(dt_txt);
-            int offset = 9; // offset 값은 로컬 시간대에 따라 다를 수 있습니다.
-            TimeZone timeZone = TimeZone.getTimeZone("GMT+" + offset);
-            Calendar calendar = Calendar.getInstance(timeZone);
-            calendar.setTimeInMillis(dateUtcTime.getTime());
-            Date dateLocalTime = calendar.getTime();
-            localTime = dateFormat.format(dateLocalTime);
-        } catch (ParseException e) {
+            unixTime = Long.parseLong(unixTimeString);
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        return localTime;
+        // UNIX 시간을 밀리초 단위로 변환
+        long unixTimeMillis = unixTime * 1000L;
+
+        // KST 시간대로 설정
+        TimeZone kstTimeZone = TimeZone.getTimeZone("Asia/Seoul");
+
+        // SimpleDateFormat을 사용하여 KST 시간 형식으로 변환
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH시 mm분");
+        dateFormat.setTimeZone(kstTimeZone);
+
+        // KST 시간으로 변환
+        String kstTime = dateFormat.format(new Date(unixTimeMillis));
+
+        return kstTime;
     }
 }

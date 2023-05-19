@@ -17,7 +17,7 @@ public class CurrentWeatherResponse {
     public List<Weather> getWeatherList() { return weatherList; }
     @SerializedName("visibility")
     private double visibility;
-    public double getVisibility() { return getVisibility(); }
+    public double getVisibility() { return visibility; }
     @SerializedName("wind")
     private WindData winddata;
     public WindData getWindData() { return winddata; }
@@ -87,8 +87,8 @@ public class CurrentWeatherResponse {
     }
     public static class RainData{
         @SerializedName("3h")
-        private double rainamount;
-        public double getRainAmount() { return rainamount;}
+        private Double rainamount;
+        public Double getRainAmount() { return rainamount; }
     }
     public static class SysData{
         @SerializedName("sunrise")

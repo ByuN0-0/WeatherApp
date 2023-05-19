@@ -24,7 +24,17 @@ public class initMainView {
     private TextView O3Text;
     private TextView pm10Text;
     private TextView pm2_5Text;
-
+    private TextView sunriseText;
+    private TextView sunsetText;
+    private TextView windDegText;
+    private TextView windSpeedText;
+    private TextView rainAmountText;
+    private TextView feelTempText;
+    private TextView humidityText;
+    private TextView visibilityText;
+    private TextView cloudsText;
+    private TextView pressureText;
+    //Todo
     private static LinearLayout scRollTimeWeather;
     private static LinearLayout scRollDayWeather;
 
@@ -45,6 +55,37 @@ public class initMainView {
     public void setLocationText(String koloc){
         this.locationText.setText(koloc + " 날씨");       //지역
     }
+    public void setSunsetText(String sunsetText){
+        this.sunsetText.setText("일몰 :\n"+sunsetText);
+    }
+    public void setSunriseText(String sunriseText){
+        this.sunriseText.setText("일출 :\n"+sunriseText);
+    }
+    public void setWindSpeedText(String windSpeed){
+        this.windSpeedText.setText("풍속 : "+ windSpeed + "m/s");
+    }
+    public void setWindDegText(String windDeg){
+        this.windDegText.setText("풍향 : "+ windDeg);
+    }
+    public void setFeelTempText(String feelTemp){
+        this.feelTempText.setText("체감온도 : "+feelTemp+"℃");
+    }
+    public void setHumidityText(String humidity){
+        this.humidityText.setText("습도 : "+humidity+"%");
+    }
+    public void setVisibilityText(String visibility){
+        this.visibilityText.setText("가시거리는\n"+visibility+"m 입니다.");
+    }
+    public void setCloudsText(String clouds){
+        this.cloudsText.setText("흐림도는\n"+clouds+"% 입니다.");
+    }
+    public void setPressureText(String pressure){
+        this.pressureText.setText("대기압 : "+pressure+" hPa");
+    }
+    public void setRainAmountText(String rainAmount){
+        this.rainAmountText.setText("지난 1시간 강수량은 "+rainAmount+"mm입니다.");
+    }
+    // Todo lines 100
     public static void setForecastText(String s, int index){
         if(index == 0){
             forecastText.setText(s);
@@ -93,6 +134,17 @@ public class initMainView {
         scRollDayWeather = mainActivity.findViewById(R.id.scRollDayweather);
         scRollTimeWeather = mainActivity.findViewById(R.id.scRollTimeWeather);
 
+        windSpeedText =  mainActivity.findViewById(R.id.windSpeed);
+        sunsetText = mainActivity.findViewById(R.id.sunset);
+        sunriseText = mainActivity.findViewById(R.id.sunrise);
+        windDegText = mainActivity.findViewById(R.id.windDeg);
+        feelTempText = mainActivity.findViewById(R.id.feelTemp);
+        humidityText = mainActivity.findViewById(R.id.humidity);
+        visibilityText = mainActivity.findViewById(R.id.visibility);
+        cloudsText = mainActivity.findViewById(R.id.clouds);
+        pressureText = mainActivity.findViewById(R.id.pressure);
+        rainAmountText = mainActivity.findViewById(R.id.rainAmount);
+        //Todo
     }
 
     public void initView(MainActivity mainActivity){

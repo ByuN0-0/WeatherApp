@@ -41,6 +41,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
+    private static int TimeCnt;
     private double latitude;
     private double longitude;
     private TextView locationLatitude;
@@ -51,9 +52,6 @@ public class MainActivity extends TabActivity {
     String allDay, strLat, strLon;
     scrollViewinit svWidget;
     ProgressDialog PD;
-
-    private static int TimeCnt;
-
     initMainView init;
     LoadAllData allData;
 
@@ -71,7 +69,6 @@ public class MainActivity extends TabActivity {
         locationLongitude = findViewById(R.id.location_longitude); //경도
 
         DemonTime = findViewById(R.id.t1);
-
 
         ShowTimeMethod();
         init = initMainView.getInstance();
@@ -120,6 +117,16 @@ public class MainActivity extends TabActivity {
             //double altitude = location.getAltitude();
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
+
+            if (location == null) {
+                latitude = 37.6168328;
+                longitude = 127.1055345;
+            } else {
+//              String provider = location.getProvider(); 현재 사용안함
+//              double altitude = location.getAltitude(); 현재 사용안함
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
             strLat = String.format("%.6f", latitude);
             strLon = String.format("%.6f", longitude);
             locationLatitude.setText("위도" + strLat);
@@ -181,7 +188,6 @@ public class MainActivity extends TabActivity {
                 } else{
                     TM.cancel();
                     PD.dismiss();
-
                 }
             }
         };
