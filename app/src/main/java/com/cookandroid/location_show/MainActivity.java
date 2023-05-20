@@ -42,16 +42,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends TabActivity {
     private static int TimeCnt;
-    private double latitude;
-    private double longitude;
     private TextView locationLatitude;
     private TextView locationLongitude;
+    public static boolean LocationLoadComplete, WeatherDataLoadComplete, WeatherForecastDataLoadComplete, AirPollutionDataLoadComplete, GeoDataLoadComplete;
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast"})
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
     TextView DemonTime;
     String allDay, strLat, strLon;
+    public ProgressDialog PD;
+    public Timer TM;
+
+    private int single = 0;
     scrollViewinit svWidget;
-    ProgressDialog PD;
     initMainView init;
     LoadAllData allData;
 
@@ -131,6 +133,9 @@ public class MainActivity extends TabActivity {
             strLon = String.format("%.6f", longitude);
             locationLatitude.setText("위도" + strLat);
             locationLongitude.setText("경도" + strLon);
+
+            LocationLoadComplete = true;
+
             allData.loadWeatherData(latitude, longitude, svWidget, init);
             allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this, init);
             allData.loadAirPollutionData(latitude, longitude, init);
@@ -172,22 +177,30 @@ public class MainActivity extends TabActivity {
         Thread thread = new Thread(task);
         thread.start();
     }
-    private void LoadingMotion(){
-        TimeCnt = 0;
+    public void LoadingMotion(){
+        if(single == 1)     //메소드 싱글톤 안하면 api failure에서 이 메소드 계속 호출
+            return;
+        single++;
+
         PD = new ProgressDialog(this);
         PD.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         PD.setCancelable(false);
 
-        Timer TM = new Timer();
+        TM = new Timer();
         PD.show();
+        TimeCnt = 0;
+
         TimerTask TM_T = new TimerTask() {
             @Override
             public void run() {
-                if(TimeCnt < 1){
-                    TimeCnt++;
-                } else{
+                TimeCnt++;
+                System.out.println(TimeCnt);
+                if(WeatherDataLoadComplete && WeatherForecastDataLoadComplete && LocationLoadComplete && AirPollutionDataLoadComplete && GeoDataLoadComplete){
+                    TimeCnt = 0;
                     TM.cancel();
                     PD.dismiss();
+                    single = 0;
+                    System.out.println("TimeCnt초기화");
                 }
             }
         };

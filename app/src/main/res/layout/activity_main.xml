@@ -24,8 +24,8 @@
                 android:id="@+id/weatherNow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#1d1d1d"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@drawable/bgimg">
 
                 <!-- 첫 번째 화면 상단 -->
                 <LinearLayout

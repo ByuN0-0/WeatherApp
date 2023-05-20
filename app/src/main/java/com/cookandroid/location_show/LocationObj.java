@@ -1,5 +1,5 @@
 package com.cookandroid.location_show;
-
+//안쓰는 클래스
 import android.content.pm.PackageManager;
 import android.os.Build;
 

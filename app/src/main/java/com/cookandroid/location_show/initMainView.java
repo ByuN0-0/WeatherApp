@@ -53,7 +53,8 @@ public class initMainView {
         this.locationDescription.setText("현재 날씨는 " + locationDescription);      //날씨
     }
     public void setLocationText(String koloc){
-        this.locationText.setText(koloc + " 날씨");       //지역
+        this.locationText.setText(koloc + " 날씨");
+        MainActivity.GeoDataLoadComplete = true;
     }
     public void setSunsetText(String sunsetText){
         this.sunsetText.setText("일몰 :\n"+sunsetText);
@@ -111,6 +112,7 @@ public class initMainView {
     }
     public void setPm2_5Text(String pm2_5){
         pm2_5Text.setText(pm2_5);
+        MainActivity.AirPollutionDataLoadComplete = true;
     }
     public static LinearLayout getscRollTimeWeather(){
         return scRollTimeWeather;

@@ -223,6 +223,7 @@ public class scrollViewinit {
                 DayWeather_Lay[i].addView(DayWeather_InsideLay[j]);
                 DayWeather_Lay[i].setGravity(Gravity.CENTER_VERTICAL);
                 DayWeather_Lay[i].setBackgroundColor(Color.parseColor("#000000"));
+                MainActivity.WeatherForecastDataLoadComplete = true;
 //                DayWeather_Lay[i].setBackgroundResource(R.drawable.round);
             }
         }
@@ -377,6 +378,7 @@ public class scrollViewinit {
 //            TimeWeather_Lay[i].setBackgroundResource(R.drawable.noimage);
                 TimeWeather_Lay[i].addView(TimeWeather_InsideLay[j]);
                 TimeWeather_Lay[i].setOrientation(LinearLayout.VERTICAL);
+                MainActivity.WeatherDataLoadComplete = true;
             }
         }
     }

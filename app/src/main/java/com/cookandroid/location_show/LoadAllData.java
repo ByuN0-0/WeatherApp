@@ -103,6 +103,7 @@ public class LoadAllData {
             public void onFailure(Call<CurrentWeatherResponse> call, Throwable t) {
                 // API 호출 실패
                 imView.setTemperatureTextView("api 호출 실패");
+                MainActivity.WeatherDataLoadComplete = false;
             }
         });
     }
@@ -145,6 +146,8 @@ public class LoadAllData {
 
             @Override
             public void onFailure(Call<WeatherForecastResponse> call, Throwable t) {
+                MainActivity.WeatherForecastDataLoadComplete = false;
+                mainActivity.LoadingMotion();
                 // API 호출 실패
 //                test1.setText("api 호출 실패!!!"+ t.getMessage());
             }
@@ -182,6 +185,7 @@ public class LoadAllData {
                 imView.setO3Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm10Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm2_5Text("api 호출 실패!!!"+ t.getMessage());
+                MainActivity.AirPollutionDataLoadComplete = false;
             }
         });
     }
@@ -205,6 +209,7 @@ public class LoadAllData {
             }
             @Override
             public void onFailure(Call<List<GeoResponse>> call, Throwable t) {
+                MainActivity.GeoDataLoadComplete = false;
             }
         });
     }
