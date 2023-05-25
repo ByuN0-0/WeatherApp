@@ -79,10 +79,21 @@ public class LoadAllData {
                     String pressureString = String.format("%.1f", pressure);
                     String rainAmountString = String.format("%.0f", rainAmount);
 
+                    String sunsetString = convertUnixTimeToKST(sunset);
+                    String sunriseString = convertUnixTimeToKST(sunrise);
+
+                    Opacity opa = new Opacity(sunriseString, sunsetString);
+                    try {
+                        int test[] = opa.setBackgroundImg();
+                        System.out.println("test[0] = " + test[0]);
+                        System.out.println("test[1] = " + test[1]);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
                     imView.setLocationDescription(descriptionString);
                     imView.setTemperatureTextView(temperatureString);
-                    imView.setSunsetText(convertUnixTimeToKST(sunset));
-                    imView.setSunriseText(convertUnixTimeToKST(sunrise));
+                    imView.setSunsetText(sunsetString);
+                    imView.setSunriseText(sunriseString);
                     imView.setWindSpeedText(windSpeedString);
                     imView.setWindDegText(getDirection(windDeg));
                     imView.setFeelTempText(feelTempString);
@@ -94,6 +105,9 @@ public class LoadAllData {
                     svWidget.setPresentWeather(descriptionString);
                     svWidget.setCurrentIco(icon);
                     svWidget.setPresentTemp(temperatureString);
+
+                    MainActivity.sunset = sunset;
+                    MainActivity.sunrise = sunrise;
                 } else{
                     System.out.println("Response Fail");
                 }

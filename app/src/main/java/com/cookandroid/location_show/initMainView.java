@@ -34,7 +34,6 @@ public class initMainView {
     private TextView visibilityText;
     private TextView cloudsText;
     private TextView pressureText;
-    //Todo
     private static LinearLayout scRollTimeWeather;
     private static LinearLayout scRollDayWeather;
 
@@ -86,7 +85,6 @@ public class initMainView {
     public void setRainAmountText(String rainAmount){
         this.rainAmountText.setText("지난 1시간 강수량은 "+rainAmount+"mm입니다.");
     }
-    // Todo lines 100
     public static void setForecastText(String s, int index){
         if(index == 0){
             forecastText.setText(s);
@@ -146,7 +144,6 @@ public class initMainView {
         cloudsText = mainActivity.findViewById(R.id.clouds);
         pressureText = mainActivity.findViewById(R.id.pressure);
         rainAmountText = mainActivity.findViewById(R.id.rainAmount);
-        //Todo
     }
 
     public void initView(MainActivity mainActivity){

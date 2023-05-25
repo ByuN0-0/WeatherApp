@@ -23,6 +23,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -44,6 +45,8 @@ public class MainActivity extends TabActivity {
     private static int TimeCnt;
     private TextView locationLatitude;
     private TextView locationLongitude;
+    public static String sunrise = "07시 00분";
+    public static String sunset = "20시 30분";
     public static boolean LocationLoadComplete, WeatherDataLoadComplete, WeatherForecastDataLoadComplete, AirPollutionDataLoadComplete, GeoDataLoadComplete;
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast"})
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
@@ -65,7 +68,6 @@ public class MainActivity extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LoadingMotion();
-
 
         locationLatitude = findViewById(R.id.location_latitude); //위도
         locationLongitude = findViewById(R.id.location_longitude); //경도
@@ -159,6 +161,10 @@ public class MainActivity extends TabActivity {
                 Date d = new Date();
                 allDay = DateFormat.getDateTimeInstance().format(d);
                 DemonTime.setText(dformat.format(d));
+                if(TimeCnt >= 15 && TimeCnt % 10 == 0){
+                    System.out.println("토스트 실행");
+                    Toast.makeText(getApplicationContext(),"인터넷 연결 또는 GPS연결을 확인해주세요.",Toast.LENGTH_LONG).show();
+                }
             }
         };
         Runnable task = new Runnable() {
