@@ -141,6 +141,7 @@ public class Opacity {
             values[1]=calculateTime(dFormat.format(date9), currentTime);
             System.out.println(dFormat.format(date9) + currentTime);
             return values;
+
         }
     }
     public static int calculateTime(String time, String current) {
