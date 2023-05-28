@@ -137,7 +137,7 @@ public class LoadAllData {
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        WfMapApi WFapi = retroWFapi.create(WfMapApi.class);
+        WFmapApi WFapi = retroWFapi.create(WFmapApi.class);
         Call<WeatherForecastResponse> WFcall = WFapi.getWf(latitude, longitude, apiKey, units, apilang);
         WFcall.enqueue(new Callback<WeatherForecastResponse>() {
             @Override
