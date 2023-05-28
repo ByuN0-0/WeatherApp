@@ -1,10 +1,11 @@
 package com.cookandroid.location_show;
 
-import android.opengl.Visibility;
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -16,11 +17,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoadAllData {
-    private String apiKey = "163034e395f4430a30d20336ccc67b22";
-    private String units = "metric";
-    private String apilang = "kr";
+    private final String apiKey = "163034e395f4430a30d20336ccc67b22";
+    private final String units = "metric";
+    private final String apilang = "kr";
 
     private static LoadAllData Instance;
+    public static int[] test;
 
     private LoadAllData(){}
     public static LoadAllData getInstance(){
@@ -45,9 +47,21 @@ public class LoadAllData {
         // 초기화한 라이브러리로 call 객체에 api JSON파일을 가져옴
         CWcall.enqueue(new Callback<CurrentWeatherResponse>() {     //enqueue 비동기식, execute 동기식
             @Override
-            public void onResponse(Call<CurrentWeatherResponse> call, Response<CurrentWeatherResponse> response) {
-                // api 호출 성공
+            public void onResponse(@NonNull Call<CurrentWeatherResponse> call, @NonNull Response<CurrentWeatherResponse> response) {
+                 //api 호출 성공
                 if (response.isSuccessful()) {
+//                    double temperature = response.body().getWeatherData().getTemperature();
+//                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
+//                    String icon = response.body().getWeatherList().get(0).getIcon();
+//                    @SuppressLint("DefaultLocale") String temperatureString = String.format("%.1f", temperature);
+//                    imView.setLocationDescription(descriptionString);
+//                    imView.setTemperatureTextView(temperatureString);
+//                    svWidget.setPresentWeather(descriptionString);
+//                    svWidget.setCurrentIco(icon);
+//                    svWidget.setPresentTemp(temperatureString);
+//                } else{
+//                    System.out.println("Response Fail");
+//                }
                     double temperature = response.body().getWeatherData().getTemperature(); //Todo
                     double feelTemp = response.body().getWeatherData().getFeeltemp();
                     double humidity = response.body().getWeatherData().getHumidity();
@@ -67,33 +81,33 @@ public class LoadAllData {
                     }
                     String sunrise = response.body().getSysdata().getSunrise();
                     String sunset = response.body().getSysdata().getSunset();
-                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
-                    String icon = response.body().getWeatherList().get(0).getIcon();
-
-                    String temperatureString = String.format("%.1f", temperature);
-                    String windSpeedString = String.format("%.1f", windSpeed);
-                    String feelTempString = String.format("%.1f", feelTemp);
-                    String humidityString = String.format("%.1f", humidity);
-                    String visibilityString = String.format("%.1f", visibility);
-                    String cloudsString = String.format("%.1f", clouds);
-                    String pressureString = String.format("%.1f", pressure);
-                    String rainAmountString = String.format("%.0f", rainAmount);
-
                     String sunsetString = convertUnixTimeToKST(sunset);
                     String sunriseString = convertUnixTimeToKST(sunrise);
-
                     Opacity opa = new Opacity(sunriseString, sunsetString);
                     try {
-                        int test[] = opa.setBackgroundImg();
-                        System.out.println("test[0] = " + test[0]);
-                        System.out.println("test[1] = " + test[1]);
+                        test = opa.setBackgroundImg();
+                        System.out.println("test[11] = " + test[11]);       //bgindex
+                        System.out.println("test[0] = " + test[10]);         //bgcurrentduration
+//                        MainActivity.BackInit(test);
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
+                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
+                    String icon = response.body().getWeatherList().get(0).getIcon();
+
+                    @SuppressLint("DefaultLocale") String temperatureString = String.format("%.1f", temperature);
+                    @SuppressLint("DefaultLocale") String windSpeedString = String.format("%.1f", windSpeed);
+                    @SuppressLint("DefaultLocale") String feelTempString = String.format("%.1f", feelTemp);
+                    @SuppressLint("DefaultLocale") String humidityString = String.format("%.1f", humidity);
+                    @SuppressLint("DefaultLocale") String visibilityString = String.format("%.1f", visibility);
+                    @SuppressLint("DefaultLocale") String cloudsString = String.format("%.1f", clouds);
+                    @SuppressLint("DefaultLocale") String pressureString = String.format("%.1f", pressure);
+                    @SuppressLint("DefaultLocale") String rainAmountString = String.format("%.0f", rainAmount);
+
                     imView.setLocationDescription(descriptionString);
                     imView.setTemperatureTextView(temperatureString);
-                    imView.setSunsetText(sunsetString);
-                    imView.setSunriseText(sunriseString);
+                    imView.setSunsetText(convertUnixTimeToKST(sunset));
+                    imView.setSunriseText(convertUnixTimeToKST(sunrise));
                     imView.setWindSpeedText(windSpeedString);
                     imView.setWindDegText(getDirection(windDeg));
                     imView.setFeelTempText(feelTempString);
@@ -105,35 +119,32 @@ public class LoadAllData {
                     svWidget.setPresentWeather(descriptionString);
                     svWidget.setCurrentIco(icon);
                     svWidget.setPresentTemp(temperatureString);
-
-                    MainActivity.sunset = sunset;
-                    MainActivity.sunrise = sunrise;
                 } else{
                     System.out.println("Response Fail");
                 }
             }
 
             @Override
-            public void onFailure(Call<CurrentWeatherResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<CurrentWeatherResponse> call, @NonNull Throwable t) {
                 // API 호출 실패
                 imView.setTemperatureTextView("api 호출 실패");
-                MainActivity.WeatherDataLoadComplete = false;
+                MainActivity.WeatherDataLoadComplete = false;       //Todo 이 부분 바뀜
             }
         });
     }
-    public void loadWeatherForecastData(double latitude, double longitude, scrollViewinit svWidget, MainActivity mainActivity, initMainView imView){
+    public void loadWeatherForecastData(double latitude, double longitude, scrollViewinit svWidget, MainActivity mainActivity){
         Retrofit retroWFapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        WFmapApi WFapi = retroWFapi.create(WFmapApi.class);
+        WfMapApi WFapi = retroWFapi.create(WfMapApi.class);
         Call<WeatherForecastResponse> WFcall = WFapi.getWf(latitude, longitude, apiKey, units, apilang);
         WFcall.enqueue(new Callback<WeatherForecastResponse>() {
             @Override
-            public void onResponse(Call<WeatherForecastResponse> call, Response<WeatherForecastResponse> response) {
+            public void onResponse(@NonNull Call<WeatherForecastResponse> call, @NonNull Response<WeatherForecastResponse> response) {
                 // api 호출 성공
                 if (response.isSuccessful()) {
-                    String iconUrl = response.body().getForecastList().get(0).getWeatherList().get(0).getIcon();
+//                    String iconUrl = response.body().getForecastList().get(0).getWeatherList().get(0).getIcon();
 //                    loadImage(test2, iconUrl);
                     double[] tempList = new double[40];
                     String[] icoList = new String[40];
@@ -150,17 +161,18 @@ public class LoadAllData {
                     svWidget.setTempList(tempList);
                     svWidget.setIcoList(icoList);
                     svWidget.setWeatherList(weatherList);
-                    svWidget.TimeWeatherReload(mainActivity, imView.getscRollTimeWeather());
-                    svWidget.DayWeatherReload(mainActivity, imView.getscRollDayWeather());
+                    svWidget.TimeWeatherReload(mainActivity, initMainView.getscRollTimeWeather());
+                    svWidget.DayWeatherReload(mainActivity, initMainView.getscRollDayWeather());
                     svWidget.initView();
+//                    mainActivity.TM.cancel();   //Todo 이 부분 바뀜
+//                    mainActivity.PD.dismiss();  //Todo 이 부분 바뀜
                     //test1.setText(String.format("%.1f'C", temp));
-
                 }
             }
 
             @Override
-            public void onFailure(Call<WeatherForecastResponse> call, Throwable t) {
-                MainActivity.WeatherForecastDataLoadComplete = false;
+            public void onFailure(@NonNull Call<WeatherForecastResponse> call, @NonNull Throwable t) {
+                MainActivity.WeatherForecastDataLoadComplete = false;       //Todo 이 부분 바뀜
                 mainActivity.LoadingMotion();
                 // API 호출 실패
 //                test1.setText("api 호출 실패!!!"+ t.getMessage());
@@ -175,8 +187,9 @@ public class LoadAllData {
         APmapApi APapi = retroAPapi.create(APmapApi.class);
         Call<AirPollutionResponse> APcall = APapi.getAP(latitude, longitude, apiKey);
         APcall.enqueue(new Callback<AirPollutionResponse>() {
+            @SuppressLint("DefaultLocale")
             @Override
-            public void onResponse(Call<AirPollutionResponse> call, Response<AirPollutionResponse> response) {
+            public void onResponse(@NonNull Call<AirPollutionResponse> call, @NonNull Response<AirPollutionResponse> response) {
                 // api 호출 성공
                 if (response.isSuccessful()) {
                     int aqi = response.body().getAirList().get(0).getMain().getAqi();
@@ -189,17 +202,19 @@ public class LoadAllData {
                     imView.setO3Text(String.format("%.1fμg/m3",O3));
                     imView.setPm10Text(String.format("%.1fμg/m3",pm10));
                     imView.setPm2_5Text(String.format("%.1fμg/m3",pm2_5));
+//                    test1.setText(Integer.toString(aqi));
+
                 }
             }
             @Override
-            public void onFailure(Call<AirPollutionResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<AirPollutionResponse> call, @NonNull Throwable t) {
                 // API 호출 실패
                 imView.setAirqualityText("api 호출 실패!!!"+ t.getMessage());
                 imView.setCOText("api 호출 실패!!!"+ t.getMessage());
                 imView.setO3Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm10Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm2_5Text("api 호출 실패!!!"+ t.getMessage());
-                MainActivity.AirPollutionDataLoadComplete = false;
+                MainActivity.AirPollutionDataLoadComplete = false;       //Todo 이 부분 바뀜
             }
         });
     }
@@ -209,21 +224,21 @@ public class LoadAllData {
                 .baseUrl("https://api.openweathermap.org/geo/1.0/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        GeomapApi Geoapi = retroGeoapi.create(GeomapApi.class);
+        GeoMapApi Geoapi = retroGeoapi.create(GeoMapApi.class);
 
         Call<List<GeoResponse>> Geocall = Geoapi.getReGeo(latitude, longitude, apiKey);
         Geocall.enqueue(new Callback<List<GeoResponse>>() {
             @Override
-            public void onResponse(Call<List<GeoResponse>> call, Response<List<GeoResponse>> response) {
+            public void onResponse(@NonNull Call<List<GeoResponse>> call, @NonNull Response<List<GeoResponse>> response) {
                 if (response.isSuccessful()) {
                     String koloc = response.body().get(0).getLocalName().getLocal_ko();
                     imView.setLocationText(koloc);
-
                 }
             }
+
             @Override
-            public void onFailure(Call<List<GeoResponse>> call, Throwable t) {
-                MainActivity.GeoDataLoadComplete = false;
+            public void onFailure(@NonNull Call<List<GeoResponse>> call, @NonNull Throwable t) {
+                MainActivity.GeoDataLoadComplete = false;       //Todo 이 부분 바뀜
             }
         });
     }
@@ -294,6 +309,7 @@ public class LoadAllData {
         }
         return direction;
     }
+
     public static String convertUnixTimeToKST(String unixTimeString) {
         long unixTime = 0;
         try {
@@ -308,12 +324,10 @@ public class LoadAllData {
         TimeZone kstTimeZone = TimeZone.getTimeZone("Asia/Seoul");
 
         // SimpleDateFormat을 사용하여 KST 시간 형식으로 변환
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH시 mm분");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("HH시 mm분");
         dateFormat.setTimeZone(kstTimeZone);
 
         // KST 시간으로 변환
-        String kstTime = dateFormat.format(new Date(unixTimeMillis));
-
-        return kstTime;
+        return dateFormat.format(new Date(unixTimeMillis));
     }
 }

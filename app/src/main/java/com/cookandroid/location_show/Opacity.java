@@ -1,16 +1,22 @@
 package com.cookandroid.location_show;
 
+import android.annotation.SuppressLint;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Opacity {
-    String sunrise;
-    String sunset;
+    public static String sunrise;
+    public static String sunset;
+    public static String sunsetInt;
+    public static String sunsetInt1;
+    public static String sunsetSum;
     Date curDate;
     String currentTime;
     SimpleDateFormat dFormat;
+    @SuppressLint("SimpleDateFormat")
     Opacity(){
         sunrise = "07시 00분";
         sunset = "20시 30분";
@@ -18,16 +24,20 @@ public class Opacity {
         dFormat = new SimpleDateFormat("HH시 mm분");
         currentTime = dFormat.format(curDate);
     }
+    @SuppressLint("SimpleDateFormat")
     Opacity(String _sunrise, String _sunset){
         sunrise = _sunrise;
         sunset = _sunset;
+        sunsetInt = sunset.substring(0,2);
+        sunsetInt1 = sunset.substring(4,6);
+        sunsetSum = sunsetInt+sunsetInt1;
         curDate = new Date();
         dFormat = new SimpleDateFormat("HH시 mm분");
         currentTime = dFormat.format(curDate);
     }
     public int[] setBackgroundImg() throws ParseException {
         //Object[] values = new Object[2];
-        int values[] = new int[2];
+        int[] values = new int[12];
 
         Date sunriseDate = dFormat.parse(sunrise);
         Date sunsetDate = dFormat.parse(sunset);
@@ -49,16 +59,16 @@ public class Opacity {
         Calendar time9 = Calendar.getInstance();
 
 
-        time0.setTime(sunriseDate); //일출
-        time1.setTime(sunriseDate); //일출30분후
-        time2.setTime(sunriseDate); //일출1시간후
-        time3.setTime(sunriseDate); //일출5시간후
-        time4.setTime(noonDate);
-        time5.setTime(sunsetDate); //일출5시간전
-        time6.setTime(sunsetDate);  //일몰1시간전
-        time7.setTime(sunsetDate);  //일몰30분전
-        time8.setTime(sunsetDate);  //일몰
-        time9.setTime(nightDate);
+        time0.setTime(sunriseDate); //일출 30분 전
+        time1.setTime(sunriseDate); //일출
+        time2.setTime(sunriseDate); //일출 30분 후
+        time3.setTime(sunriseDate); //일출 1시간 후
+        time4.setTime(noonDate); // 12:00
+        time5.setTime(sunsetDate); //일출 1시간 전
+        time6.setTime(sunsetDate);  //일몰 30분 전
+        time7.setTime(sunsetDate);  //일몰
+        time8.setTime(sunsetDate);  //일몰 30분 후
+        time9.setTime(nightDate); // 24:00
 
         time0.add(Calendar.MINUTE,-30);
         time2.add(Calendar.MINUTE,30);
@@ -91,64 +101,86 @@ public class Opacity {
         System.out.println("Date6 = "+date6);
         System.out.println("Date7 = "+date7);
         System.out.println("------------date---------\n");
+
+        values[0]=calculateTime("00시 00분",dFormat.format(date0));
+        values[1]=calculateTime(dFormat.format(date0),dFormat.format(date1));
+        values[2]=calculateTime(dFormat.format(date1),dFormat.format(date2));
+        values[3]=calculateTime(dFormat.format(date2),dFormat.format(date3));
+        values[4]=calculateTime(dFormat.format(date3),dFormat.format(date4));
+        values[5]=calculateTime(dFormat.format(date4),dFormat.format(date5));
+        values[6]=calculateTime(dFormat.format(date5),dFormat.format(date6));
+        values[7]=calculateTime(dFormat.format(date6),dFormat.format(date7));
+        values[8]=calculateTime(dFormat.format(date7),dFormat.format(date8));
+        values[9]=calculateTime(dFormat.format(date8),dFormat.format(date9));
+
+        System.out.println(values[0]+" "+values[1]+" "+values[2]+" "+values[3]+" "+values[4]+" "+values[5]+" "+values[6]+" "+values[7]+" "+values[8]+" "+values[9]);
         if(date0.after(currentDate)){
-            values[0]=8;
-            values[1]=calculateTime(dFormat.format(date0), currentTime);
+            values[11]=8;
+            values[10]=calculateTime(currentTime, dFormat.format(date0));
             System.out.println(dFormat.format(date0) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date1.after(currentDate) || date0.equals(currentDate)){
-            values[0]=0;
-            values[1]=calculateTime(dFormat.format(date1), currentTime);
+            values[11]=0;
+            values[10]=calculateTime(currentTime, dFormat.format(date1));
             System.out.println(dFormat.format(date1) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date2.after(currentDate) || date1.equals(currentDate)){
-            values[0]=1;
-            values[1]=calculateTime(dFormat.format(date2), currentTime);
+            values[11]=1;
+            values[10]=calculateTime(currentTime, dFormat.format(date2));
             System.out.println(dFormat.format(date2) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date3.after(currentDate) || date2.equals(currentDate)){
-            values[0]=2;
-            values[1]=calculateTime(dFormat.format(date3), currentTime);
+            values[11]=2;
+            values[10]=calculateTime(currentTime, dFormat.format(date3));
             System.out.println(dFormat.format(date3) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date4.after(currentDate) || date3.equals(currentDate)){
-            values[0]=3;
-            values[1]=calculateTime(dFormat.format(date4), currentTime);
+            values[11]=3;
+            values[10]=calculateTime(currentTime, dFormat.format(date4));
             System.out.println(dFormat.format(date4) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date5.after(currentDate) || date4.equals(currentDate)){
-            values[0]=4;
-            values[1]=calculateTime(dFormat.format(date5), currentTime);
+            values[11]=4;
+            values[10]=calculateTime(currentTime, dFormat.format(date5));
             System.out.println(dFormat.format(date5) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date6.after(currentDate) || date5.equals(currentDate)){
-            values[0]=5;
-            values[1]=calculateTime(dFormat.format(date6), currentTime);
+            values[11]=5;
+            values[10]=calculateTime(currentTime, dFormat.format(date6));
             System.out.println(dFormat.format(date6) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date7.after(currentDate) || date6.equals(currentDate)){
-            values[0]=6;
-            values[1]=calculateTime(dFormat.format(date7), currentTime);
+            values[11]=6;
+            values[10]=calculateTime(currentTime, dFormat.format(date7));
             System.out.println(dFormat.format(date7) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else if(date8.after(currentDate) || date7.equals(currentDate)){
-            values[0]=7;
-            values[1]=calculateTime(dFormat.format(date8), currentTime);
+            values[11]=7;
+            values[10]=calculateTime(currentTime, dFormat.format(date8));
             System.out.println(dFormat.format(date8) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
         }else{
-            values[0]=8;
-            values[1]=calculateTime(dFormat.format(date9), currentTime);
+            values[11]=8;
+            values[10]=calculateTime(currentTime, dFormat.format(date9));
             System.out.println(dFormat.format(date9) + currentTime);
+            System.out.println("bgindex : "+values[11]);
             return values;
-
         }
     }
-    public static int calculateTime(String time, String current) {
-        int timeMinutes = convertToMinutes(time);
-        int currentMinutes = convertToMinutes(current);
+    public static int calculateTime(String before, String after) {
+        int afterMinutes = convertToMinutes(after);
+        int beforeMinutes = convertToMinutes(before);
 
-        int timeDifference = timeMinutes - currentMinutes;
+        int timeDifference = afterMinutes - beforeMinutes;
         if (timeDifference==0){ timeDifference = 60;}
         return timeDifference;
     }

@@ -52,6 +52,7 @@ public class scrollViewinit {
     public void setWeatherList(String[] weatherlist){
         weatherList = weatherlist;
     }
+
     public static scrollViewinit getInstance(){
         if(Instance == null){
             synchronized (scrollViewinit.class){
@@ -68,6 +69,7 @@ public class scrollViewinit {
 
     public void initView(){
         System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"+MainActivity.allDay);
         System.out.println("1 : "+presentWeather);
         System.out.println("2 : "+presentTemp);
         System.out.println("3 : "+currentIco);
@@ -78,7 +80,7 @@ public class scrollViewinit {
     }
 
 
-    /////////////////////////////////////안써도됨//////////////////////////////////////////
+/////////////////////////////////////안써도됨//////////////////////////////////////////
 //    public void addView(MainActivity mainActivity, LinearLayout scRoll, int index){
 //        if(index == 0){
 //            TimeWeatherWidgetInit(mainActivity);
@@ -91,11 +93,11 @@ public class scrollViewinit {
 //            //Todo
 //        }
 //    }
-    //////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n", "RtlHardcoded"})
     private void DayWeatherWidgetInit(MainActivity mainActivity){
         presentDay = new SimpleDateFormat("E").format(new Date());       //일주일 중 무슨 요일인지 또는 일주일 중 몇 번째 요일인지 또는 한달 중 몇일인지 포맷 변경 가능
         DayWeather_Lay = new LinearLayout[10];
@@ -128,12 +130,13 @@ public class scrollViewinit {
 //                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);        //높이, 너비
                     LinearLayout.LayoutParams LPS1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
                     LPS1.weight = 1;
-                    LPS1.setMargins(0,0,3,3);
+//                    LPS1.setMargins(0,0,3,3);
+                    LPS1.setMargins(0,0,0,10);
                     DayWeather_InsideLay[j].setLayoutParams(LPS1);
                     DayWeather_InsideLay[j].setGravity(Gravity.CENTER_VERTICAL);
                     DayWeather_InsideLay[j].addView(DayWeather[j]);
 //                    DayWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#99ccff"));
-                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round);
+                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round_left);
 
                 } else if(j == 1){
                     DayWeather[j].setText("image");
@@ -153,12 +156,13 @@ public class scrollViewinit {
 //                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);        //높이, 너비
                     LinearLayout.LayoutParams LPS1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
                     LPS1.weight = 1;
-                    LPS1.setMargins(0,0,3,3);
+//                    LPS1.setMargins(0,0,3,3);
+                    LPS1.setMargins(0,0,0,10);
                     DayWeather_InsideLay[j].setLayoutParams(LPS1);
                     DayWeather_InsideLay[j].setGravity(Gravity.CENTER);
                     DayWeather_InsideLay[j].addView(DayWeather[j]);
 //                    DayWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#808080"));
-                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round);
+                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.square);
 
                 } else if(j == 2){
                     DayWeather[j].setText("날씨");
@@ -179,17 +183,19 @@ public class scrollViewinit {
                     LPS1.weight = 2;
 //                    LPS1.height = LinearLayout.LayoutParams.MATCH_PARENT;
 //                    LPS1.width = 400;
-                    LPS1.setMargins(0,0,3,3);
+//                    LPS1.setMargins(0,0,3,3);
+                    LPS1.setMargins(0,0,0,10);
                     DayWeather_InsideLay[j].setLayoutParams(LPS1);
                     DayWeather_InsideLay[j].setGravity(Gravity.CENTER);
                     DayWeather_InsideLay[j].addView(DayWeather[j]);
 //                    DayWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#d09aff"));
-                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round);
+                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.square);
 
                 } else if(j == 3){
-                    DayWeather[j].setText("℃"); //Todo
+                    DayWeather[j].setText("℃");
                     if(i==0){ DayWeather[j].setText(presentTemp+"℃"); }
                     else{
+                        @SuppressLint("DefaultLocale")
                         String tmp = String.format("%.1f",tempList[i*4]);
                         DayWeather[j].setText(tmp+"℃");
                     }
@@ -206,12 +212,12 @@ public class scrollViewinit {
 //                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);        //높이, 너비
                     LinearLayout.LayoutParams LPS1 = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT);
                     LPS1.weight = 1;
-                    LPS1.setMargins(0,0,0,3);
+                    LPS1.setMargins(0,0,0,10);
                     DayWeather_InsideLay[j].setLayoutParams(LPS1);
                     DayWeather_InsideLay[j].setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
                     DayWeather_InsideLay[j].addView(DayWeather[j]);
 //                    DayWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#ff7f00"));
-                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round);
+                    DayWeather_InsideLay[j].setBackgroundResource(R.drawable.round_right);
 
                 }
                 LinearLayout.LayoutParams LPS = new LinearLayout.LayoutParams(
@@ -222,8 +228,8 @@ public class scrollViewinit {
                 DayWeather_Lay[i].setLayoutParams(LPS);
                 DayWeather_Lay[i].addView(DayWeather_InsideLay[j]);
                 DayWeather_Lay[i].setGravity(Gravity.CENTER_VERTICAL);
-                DayWeather_Lay[i].setBackgroundColor(Color.parseColor("#000000"));
-                MainActivity.WeatherForecastDataLoadComplete = true;
+//                DayWeather_Lay[i].setBackgroundColor(Color.parseColor("#000000"));
+                MainActivity.WeatherForecastDataLoadComplete=true;      //Todo 이 부분 바뀜
 //                DayWeather_Lay[i].setBackgroundResource(R.drawable.round);
             }
         }
@@ -241,7 +247,7 @@ public class scrollViewinit {
 
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
     private void TimeWeatherWidgetInit(MainActivity mainActivity){
         presentTime = new SimpleDateFormat("HH").format(new Date());
         TimeWeather = new TextView[3];
@@ -316,7 +322,7 @@ public class scrollViewinit {
                     TimeWeather_InsideLay[j].setLayoutParams(LPS1);
                     TimeWeather_InsideLay[j].addView(TimeWeather[j]);
 //                    TimeWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#ff0000"));
-                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.round_onlyborder_top);
+//                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.round_onlyborder_top);
                 }
 
                 else if(j == 1){
@@ -339,12 +345,13 @@ public class scrollViewinit {
                     TimeWeather_InsideLay[j].setLayoutParams(LPS1);
                     TimeWeather_InsideLay[j].addView(TimeWeather[j]);
 //                    TimeWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#00ff00"));
-                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.square_onlyborder);
+//                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.square_onlyborder);
                 }
 
                 else if(j == 2){
                     if (i==0) { TimeWeather[j].setText(presentTemp+"℃"); }
                     else{
+                        @SuppressLint("DefaultLocale")
                         String tmp = String.format("%.1f",tempList[i-1]);
                         TimeWeather[j].setText(tmp+"℃");
                     }
@@ -363,7 +370,7 @@ public class scrollViewinit {
                     TimeWeather_InsideLay[j].setLayoutParams(LPS1);
                     TimeWeather_InsideLay[j].addView(TimeWeather[j]);
 //                    TimeWeather_InsideLay[j].setBackgroundColor(Color.parseColor("#0000ff"));
-                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.round_onlyborder_bottom);
+//                    TimeWeather_InsideLay[j].setBackgroundResource(R.drawable.round_onlyborder_bottom);
                 }
 
 
@@ -378,14 +385,14 @@ public class scrollViewinit {
 //            TimeWeather_Lay[i].setBackgroundResource(R.drawable.noimage);
                 TimeWeather_Lay[i].addView(TimeWeather_InsideLay[j]);
                 TimeWeather_Lay[i].setOrientation(LinearLayout.VERTICAL);
-                MainActivity.WeatherDataLoadComplete = true;
+                MainActivity.WeatherDataLoadComplete = true;        //Todo 이 부분 바뀜
             }
         }
     }
 
-    public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll){ //Todo
+    public void TimeWeatherReload(MainActivity mainActivity, LinearLayout scRoll){
         scRoll.removeAllViews();
-        TimeWeatherWidgetInit(mainActivity); //Todo
+        TimeWeatherWidgetInit(mainActivity);
         for(LinearLayout L : TimeWeather_Lay)
             scRoll.addView(L);
     }

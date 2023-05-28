@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Location_show</string>
     <string name="lineSpace">\n\n\n\n\n\n</string>
+    <string name="DemonTime">aMpM 00:00:00</string>
+    <string name="setLatitude">Latitude default text</string>
+    <string name="setLongitude">Longitude default text</string>
+    <string name="setTemperature">temperature default text</string>
+    <string name="setWeatherState">Weather default text</string>
+    <string name="setAirPollution">AirPollution default text</string>
+    <string name="setRainSnowState">Rain or Snow State</string>
+    <string name="setLocalWeather">Local Weather</string>
+    <string name="setCOstate">일산화탄소</string>
+    <string name="setCOtext">CO Text</string>
+    <string name="setO3state">오존</string>
+    <string name="setO3text">O3 Text</string>
+    <string name="setPM_10state">미세먼지(PM 10)</string>
+    <string name="setPM_10text">PM_10 Text</string>
+    <string name="setPM_2_5state">미세먼지(PM 2.5)</string>
+    <string name="setPM2_5text">PM_2.5 Text</string>
 </resources>

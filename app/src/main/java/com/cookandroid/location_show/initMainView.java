@@ -1,14 +1,15 @@
 package com.cookandroid.location_show;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class initMainView {
+    @SuppressLint("StaticFieldLeak")
     private static initMainView Instance;
 
     private initMainView(){}
@@ -18,6 +19,7 @@ public class initMainView {
     private TextView temperatureTextView;
     private TextView locationDescription;
     private TextView locationText;
+    @SuppressLint("StaticFieldLeak")
     private static TextView forecastText;
     private TextView airqualityText;
     private TextView COText;
@@ -34,7 +36,10 @@ public class initMainView {
     private TextView visibilityText;
     private TextView cloudsText;
     private TextView pressureText;
+
+    @SuppressLint("StaticFieldLeak")
     private static LinearLayout scRollTimeWeather;
+    @SuppressLint("StaticFieldLeak")
     private static LinearLayout scRollDayWeather;
 
     public static initMainView getInstance(){
@@ -45,21 +50,24 @@ public class initMainView {
         }
         return Instance;
     }
+    @SuppressLint("SetTextI18n")
     public void setTemperatureTextView(String temperatureString){
         this.temperatureTextView.setText(temperatureString + "℃");      //온도
     }
+    @SuppressLint("SetTextI18n")
     public void setLocationDescription(String locationDescription){
         this.locationDescription.setText("현재 날씨는 " + locationDescription);      //날씨
     }
+    @SuppressLint("SetTextI18n")
     public void setLocationText(String koloc){
-        this.locationText.setText(koloc + " 날씨");
-        MainActivity.GeoDataLoadComplete = true;
+        this.locationText.setText(koloc + " 날씨");       //지역
+        MainActivity.GeoDataLoadComplete=true;      //Todo 이 부분 바뀜
     }
     public void setSunsetText(String sunsetText){
-        this.sunsetText.setText("일몰 :\n"+sunsetText);
+        this.sunsetText.setText("일몰 \n"+sunsetText);
     }
     public void setSunriseText(String sunriseText){
-        this.sunriseText.setText("일출 :\n"+sunriseText);
+        this.sunriseText.setText("일출 \n"+sunriseText);
     }
     public void setWindSpeedText(String windSpeed){
         this.windSpeedText.setText("풍속 : "+ windSpeed + "m/s");
@@ -96,6 +104,7 @@ public class initMainView {
             forecastText.setText(s);
         }
     }
+    @SuppressLint("SetTextI18n")
     public void setAirqualityText(String aqi){
         airqualityText.setText("미세먼지 농도: "+aqi);
     }
@@ -110,7 +119,7 @@ public class initMainView {
     }
     public void setPm2_5Text(String pm2_5){
         pm2_5Text.setText(pm2_5);
-        MainActivity.AirPollutionDataLoadComplete = true;
+        MainActivity.AirPollutionDataLoadComplete=true;     //Todo 이 부분 바뀜
     }
     public static LinearLayout getscRollTimeWeather(){
         return scRollTimeWeather;
@@ -144,6 +153,7 @@ public class initMainView {
         cloudsText = mainActivity.findViewById(R.id.clouds);
         pressureText = mainActivity.findViewById(R.id.pressure);
         rainAmountText = mainActivity.findViewById(R.id.rainAmount);
+
     }
 
     public void initView(MainActivity mainActivity){
