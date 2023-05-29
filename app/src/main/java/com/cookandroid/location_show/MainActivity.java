@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -48,9 +49,13 @@ public class MainActivity extends TabActivity {
     private static int[] bgTest;          //Todo
     private static int bgTmp;       //Todo
     private static int bgTmp1;
+    private int single = 0;
     private int single1 = 0;        //Todo
+    private int single2 = 0;
+    private int single3 = 0;
     @SuppressLint("SimpleDateFormat")
     SimpleDateFormat Ct = new SimpleDateFormat("HH");          //Todo
+    @SuppressLint("SimpleDateFormat")
     SimpleDateFormat Ct1 = new SimpleDateFormat("mm");          //Todo
     String CtSum;       //Todo
     Integer CurrentTime;        //Todo
@@ -65,8 +70,6 @@ public class MainActivity extends TabActivity {
 
     public ProgressDialog PD;
     public Timer TM;
-
-    private int single = 0;             //Todo
     private scrollViewinit svWidget;
     private initMainView init;
     private LoadAllData allData;
@@ -75,6 +78,10 @@ public class MainActivity extends TabActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.setAction(Intent.ACTION_MAIN);
+        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         setContentView(R.layout.activity_main);
         LoadingMotion();
 
@@ -94,10 +101,10 @@ public class MainActivity extends TabActivity {
         weatherView.setWeatherData(PrecipType.RAIN);        //날씨 설정         //Todo
         //PrecipType precip = PrecipType.CLEAR;         //맑음 설정하려면 setWeatherData에 이 값을 매개 변수로 전달       //Todo
 
-        ImView = (ImageView) findViewById(R.id.ImView);     //Todo
-        ImView.setTranslationX(1200);       //오른쪽 상단의 좌표. 만약 500이면 가운데임     Todo
-        animationMoveAlpha = AnimationUtils.loadAnimation(this, R.anim.falling_star);       //Todo
-        ImView.startAnimation(animationMoveAlpha);      //Todo
+//        ImView = (ImageView) findViewById(R.id.ImView);     //Todo
+//        ImView.setTranslationX(1200);       //오른쪽 상단의 좌표. 만약 500이면 가운데임     Todo
+//        animationMoveAlpha = AnimationUtils.loadAnimation(this, R.anim.falling_star);       //Todo
+//        ImView.startAnimation(animationMoveAlpha);      //Todo
         Date dt = new Date();
         String CtSt = Ct.format(dt);
         CurrentTime = Integer.parseInt(CtSt);
@@ -175,13 +182,10 @@ public class MainActivity extends TabActivity {
             allData.loadGeoData(latitude, longitude, init);
 
         }
-
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
-
         public void onProviderEnabled(String provider) {
         }
-
         public void onProviderDisabled(String provider) {
         }
     };
@@ -198,29 +202,39 @@ public class MainActivity extends TabActivity {
                 TimeCount++;
                 System.out.println(TimeCount);
 
-                System.out.println("일출 : "+Opacity.sunrise);
-                System.out.println("일몰 : "+Opacity.sunset);
-
-                if(single == 0){
-                    single = 1;
-                    System.out.println("---------------------------------------처음 출력");
-                    System.out.println("-------------------------------------------인덱스 : " + bgTest[11]);
-                    System.out.println("----------------------------------------------분 : " + bgTest[10]);
-                    System.out.println("---------------------------------------밀리초 계산 : " + bgTest[10] * 1000 * 60);
-                    System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);
-                    MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                    transition = (TransitionDrawable) MainFrame.getBackground();
-                    bgTmp = bgTest[10] * 60;
-                    transition.startTransition(bgTmp);
+                if(single3 == 0){
+                    single3 = 1;
+                    if(bgTest == null){
+                        single3 = 0;
+                        TimeCount--;
+                    } else {
+                        System.out.println("---------------------------------------처음 출력");
+                        System.out.println("---------------------------------------일출 : "+Opacity.sunrise);
+                        System.out.println("---------------------------------------일몰 : "+Opacity.sunset);
+                        System.out.println("-------------------------------------------인덱스 : " + bgTest[11]);
+                        System.out.println("----------------------------------------------분 : " + bgTest[10]);
+                        System.out.println("---------------------------------------밀리초 계산 : " + bgTest[10] * 1000 * 60);
+                        System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);
+                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
+                        transition = (TransitionDrawable) MainFrame.getBackground();
+                        bgTmp = bgTest[10] * 60;
+                        transition.startTransition(bgTmp);
 //                    transition.startTransition(bgTest[10] * 60 * 10);
-                    System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);
-                    TimeCount = 0;
-                    bgTmp = (bgTmp / 1000) + 1;
-                    System.out.println("--------------------------------------------일몰 시간 : "+Integer.parseInt(Opacity.sunsetInt));
-                    System.out.println("--------------------------------------------일몰 분 : "+Integer.parseInt(Opacity.sunsetInt1));
-                    System.out.println("--------------------------------------------일몰 시간 + 분 : "+Integer.parseInt(Opacity.sunsetSum));
-                    System.out.println("--------------------------------------------현재 시간 + 분 : "+Integer.parseInt(CtSum));
+                        System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);
+                        TimeCount = 0;
+                        bgTmp = (bgTmp / 1000) + 1;
+                        System.out.println("--------------------------------------------bgTmp : "+bgTmp);
+                        System.out.println("--------------------------------------------일몰 시간 : "+Integer.parseInt(Opacity.sunsetInt));
+                        System.out.println("--------------------------------------------일몰 분 : "+Integer.parseInt(Opacity.sunsetInt1));
+                        System.out.println("--------------------------------------------일몰 시간 + 분 : "+Integer.parseInt(Opacity.sunsetSum));
+                        System.out.println("--------------------------------------------현재 시간 + 분 : "+Integer.parseInt(CtSum));
+                    }
                 } else if((bgTest != null) && (TimeCount == bgTmp)){
+                    if((CurrentTime <= 23 && Integer.parseInt(CtSum) >= Integer.parseInt(Opacity.sunsetSum)) && single1 == 0){
+                        single1++;
+                        bgTmp1 = 9;
+//                        System.out.println("-----------------------------------bgTmp가 현재 9");
+                    }
                     if(bgTmp1 == 9){
                         System.out.println("-----------------------------------bgTmp가 현재 9");
                         bgTmp = -1;
@@ -228,14 +242,16 @@ public class MainActivity extends TabActivity {
                         bgTest[11] = 8;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
                     } else if(bgTest[11] == 8){
-                        if((CurrentTime <= 23 && Integer.parseInt(CtSum) >= Integer.parseInt(Opacity.sunsetSum)) && single1 == 0){
-                            single1++;
-                            bgTest[11] = 8;
-                            MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        } else {
-                            bgTest[11] = 0;
-                            MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        }
+//                        if((CurrentTime <= 23 && Integer.parseInt(CtSum) >= Integer.parseInt(Opacity.sunsetSum)) && single1 == 0){
+//                            single1++;
+//                            bgTest[11] = 8;
+//                            MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
+//                        } else {
+//                            bgTest[11] = 0;
+//                            MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
+//                        }
+                        bgTest[11] = 0;
+                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
                         System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 0){
                         bgTest[11] = 1;
@@ -285,209 +301,6 @@ public class MainActivity extends TabActivity {
                     bgTmp = ((bgTest[bgTmp] * 60) / 1000)+1;
                     TimeCount = 0;
                 }
-
-//                if(TimeCount <= 5) {
-//                    if(single == 1){
-//                        System.out.println("------------------------------------single = 1");
-//                    }
-//                    else {
-//                        System.out.println("---------------------------------------처음 출력");
-//                        System.out.println("-------------------------------------------인덱스 : " + bgTest[11]);
-//                        System.out.println("----------------------------------------------분 : " + bgTest[10]);
-//                        System.out.println("---------------------------------------밀리초 계산 : " + bgTest[10] * 1000 * 60);
-//                        System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        transition = (TransitionDrawable) MainFrame.getBackground();
-//                        bgTmp = bgTest[10] * 60;
-//                        transition.startTransition(bgTmp * 10);
-//                        System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);
-//                        TimeCount = 0;
-//                    }
-//                    single = 1;
-//                }
-//
-//                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Todo
-//
-//                else if(TimeCount == (bgTmp/100)+1){
-//                    if(bgTest[11] == 8){
-//                        bgTest[11] = 0;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 0){
-//                        bgTest[11] = 1;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 1){
-//                        bgTest[11] = 2;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 2){
-//                        bgTest[11] = 3;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 3){
-//                        bgTest[11] = 4;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 4) {
-//                        bgTest[11] = 5;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : " + bgTest[11]);
-//                    } else if(bgTest[11] == 5){
-//                        bgTest[11] = 6;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 6){
-//                        bgTest[11] = 7;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 7){
-//                        bgTest[11] = 8;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    }
-//                    bgTmp = bgTest[11] + 1;
-//                    if(bgTmp == 10){
-//                        bgTmp = 0;
-//                    }
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(bgTest[bgTmp] * 60 * 10);
-//                    System.out.println("------------------------------------------바뀐 지속시간 : "+bgTest[bgTest[11]+1] * 60);
-//                    TimeCount = 0;
-//                }
-
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////Todo
-
-//                if(TimeCount == (bgTest[0] * 60)/1000){
-//                    if(bgTest[11] == 8){
-//                        bgTest[11] = 0;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 0){
-//                        bgTest[11] = 1;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 1){
-//                        bgTest[11] = 2;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 2){
-//                        bgTest[11] = 3;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 3){
-//                        bgTest[11] = 4;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 4) {
-//                        bgTest[11] = 5;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : " + bgTest[11]);
-//                    } else if(bgTest[11] == 5){
-//                        bgTest[11] = 6;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 6){
-//                        bgTest[11] = 7;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    } else if(bgTest[11] == 7){
-//                        bgTest[11] = 8;
-//                        MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-//                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
-//                    }
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(bgTest[bgTest[11]+1] * 60);
-//                    TimeCount = 0;
-//                }
-//                else if((TimeCount == tmpdurationValue * 60) && tmpbgIndex == 8){
-//                    MainFrame.setBackgroundResource(alpha_draw[tmpbgIndex-8]);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(30 * 1000 * 60);
-//                } else if((TimeCount == tmpdurationValue * 60) && tmpbgIndex == 0){
-//                    MainFrame.setBackgroundResource(alpha_draw[tmpbgIndex++]);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(30 * 1000 * 60);
-//                } else if((TimeCount == tmpdurationValue * 60) && tmpbgIndex == 1){
-//                    MainFrame.setBackgroundResource(alpha_draw[tmpbgIndex++]);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(30 * 1000 * 60);
-//                } else if((TimeCount == tmpdurationValue * 60) && tmpbgIndex == 2){
-//                    MainFrame.setBackgroundResource(alpha_draw[tmpbgIndex++]);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(30 * 1000 * 60);
-//                }
-
-//                if(TimeCount % 5 == 0 && (LoadAllData.test[11] == 0 || LoadAllData.test[11] == 8))
-//                    ImView.startAnimation(animationMoveAlpha);        //Todo
-
-//                if(TimeCount == 1){
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw0);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 4) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw1);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 8) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw2);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 12) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw3);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 16) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw4);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 20) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw5);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 24) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw6);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 28) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw7);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                } else if(TimeCount == 32) {
-//                    MainFrame.setBackgroundResource(R.drawable.alpha_draw8);
-//                    transition = (TransitionDrawable) MainFrame.getBackground();
-//                    transition.startTransition(3000);
-//
-//                    ImView.startAnimation(animationMoveAlpha);
-//
-//                }
-//                if(TimeCount == 36){
-//                    TimeCount = 0;
-//                }
 ///////////////////////////////////////////////////////여기까지///////////////////////////////////////////////////////////Todo
                 if(TimeCnt >= 10 && TimeCnt % 10 == 0){
                     System.out.println("토스트 실행");

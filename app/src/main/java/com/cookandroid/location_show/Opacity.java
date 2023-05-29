@@ -43,7 +43,6 @@ public class Opacity {
         Date sunsetDate = dFormat.parse(sunset);
         Date currentDate = dFormat.parse(currentTime);
         Date noonDate = dFormat.parse("12시 00분");
-        Date nightDate = dFormat.parse("23시 59분");
         System.out.println("sunriseDate : "+ sunriseDate);
         System.out.println("sunsetDate : "+ sunsetDate);
 
@@ -68,7 +67,7 @@ public class Opacity {
         time6.setTime(sunsetDate);  //일몰 30분 전
         time7.setTime(sunsetDate);  //일몰
         time8.setTime(sunsetDate);  //일몰 30분 후
-        time9.setTime(nightDate); // 24:00
+        time9.setTime(noonDate); // 24:00 여기는 12:00 아래에서 +12시간
 
         time0.add(Calendar.MINUTE,-30);
         time2.add(Calendar.MINUTE,30);
@@ -76,7 +75,8 @@ public class Opacity {
         time5.add(Calendar.HOUR_OF_DAY, -1);
         time6.add(Calendar.MINUTE, -30);
         time8.add(Calendar.MINUTE, 30);
-
+        time9.add(Calendar.HOUR_OF_DAY,12);
+        
         Date date0 = time0.getTime();
         Date date1 = time1.getTime();
         Date date2 = time2.getTime();
@@ -100,6 +100,8 @@ public class Opacity {
         System.out.println("Date5 = "+date5);
         System.out.println("Date6 = "+date6);
         System.out.println("Date7 = "+date7);
+        System.out.println("Date6 = "+date8);
+        System.out.println("Date7 = "+date9);
         System.out.println("------------date---------\n");
 
         values[0]=calculateTime("00시 00분",dFormat.format(date0));
@@ -181,7 +183,7 @@ public class Opacity {
         int beforeMinutes = convertToMinutes(before);
 
         int timeDifference = afterMinutes - beforeMinutes;
-        if (timeDifference==0){ timeDifference = 60;}
+        if (timeDifference<0) { timeDifference = (60*24) - beforeMinutes; }
         return timeDifference;
     }
     private static int convertToMinutes(String time) {

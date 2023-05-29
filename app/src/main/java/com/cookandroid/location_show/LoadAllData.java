@@ -20,7 +20,7 @@ public class LoadAllData {
     private final String apiKey = "163034e395f4430a30d20336ccc67b22";
     private final String units = "metric";
     private final String apilang = "kr";
-
+    String currentWeatherIcon;
     private static LoadAllData Instance;
     public static int[] test;
 
@@ -93,7 +93,7 @@ public class LoadAllData {
                         throw new RuntimeException(e);
                     }
                     String descriptionString = response.body().getWeatherList().get(0).getDescription();
-                    String icon = response.body().getWeatherList().get(0).getIcon();
+                    currentWeatherIcon = response.body().getWeatherList().get(0).getIcon();
 
                     @SuppressLint("DefaultLocale") String temperatureString = String.format("%.1f", temperature);
                     @SuppressLint("DefaultLocale") String windSpeedString = String.format("%.1f", windSpeed);
@@ -117,7 +117,7 @@ public class LoadAllData {
                     imView.setPressureText(pressureString);
                     imView.setRainAmountText(rainAmountString);
                     svWidget.setPresentWeather(descriptionString);
-                    svWidget.setCurrentIco(icon);
+                    svWidget.setCurrentIco(currentWeatherIcon);
                     svWidget.setPresentTemp(temperatureString);
                 } else{
                     System.out.println("Response Fail");
@@ -246,6 +246,12 @@ public class LoadAllData {
     private void checkRain(String[] weatherlist) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
         boolean rain = false;
         boolean snow = false;
+        if(currentWeatherIcon.equals("09d") || currentWeatherIcon.equals("10d") || currentWeatherIcon.equals("11d") || currentWeatherIcon.equals("09n") || currentWeatherIcon.equals("10n") || currentWeatherIcon.equals("11n")) {
+            rain = true;
+        }
+        if (currentWeatherIcon.equals("13d") || currentWeatherIcon.equals("13n")){
+            snow = true;
+        }
         for (int i = 0; i < 8; i++) {
             if (weatherlist[i].equals("09d") || weatherlist[i].equals("10d") || weatherlist[i].equals("11d") || weatherlist[i].equals("09n") || weatherlist[i].equals("10n") || weatherlist[i].equals("11n")) {
                 rain = true;
@@ -254,20 +260,21 @@ public class LoadAllData {
                 snow = true;
             }
         }
+
         if (rain || snow) {
             if (rain && snow) {
 //                forecastText.setText("오늘 한때 눈이나 비가 예상됩니다.");
-                initMainView.setForecastText("오늘 한때 눈이나 비가 예상됩니다.",0);
+                initMainView.setForecastText("24시간 이내에 눈이나 비가 예상됩니다.",0);
             } else if (rain) {
 //                forecastText.setText("오늘 한때 비가 예상됩니다.");
-                initMainView.setForecastText("오늘 한때 비가 예상됩니다.",1);
+                initMainView.setForecastText("24시간 이내에 비가 예상됩니다.",1);
             } else {
 //                forecastText.setText("오늘 한때 눈이 예상됩니다.");
-                initMainView.setForecastText("오늘 한때 눈이 예상됩니다.",2);
+                initMainView.setForecastText("24시간 이내에 한때 눈이 예상됩니다.",2);
             }
         } else {
 //            forecastText.setText("오늘은 눈이나 비가 예상되지 않습니다.");
-            initMainView.setForecastText("오늘은 눈이나 비가 예상되지 않습니다.",3);
+            initMainView.setForecastText("향후 24시간 내에 눈이나 비가 예상되지 않습니다.",3);
         }
     }
 

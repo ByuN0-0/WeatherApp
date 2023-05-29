@@ -222,7 +222,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음(0~30µg/㎥)"
+                                android:text="좋음0~30µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
@@ -232,7 +232,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통(31~80µg/㎥)"
+                                android:text="보통31~80µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
@@ -242,7 +242,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨(81~150µg/㎥)"
+                                android:text="나쁨81~150µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
@@ -251,7 +251,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨(150µg/㎥~)"
+                                android:text="매우나쁨150µg/㎥~"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
@@ -309,7 +309,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음(0~15µg/㎥)"
+                                android:text="좋음0~15µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
@@ -319,7 +319,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통(16~35µg/㎥)"
+                                android:text="보통16~35µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
@@ -329,7 +329,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨(36~75µg/㎥)"
+                                android:text="나쁨36~75µg/㎥"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
@@ -338,7 +338,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨(76µg/㎥~)"
+                                android:text="매우나쁨76µg/㎥~"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
@@ -384,6 +384,53 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="일산화탄소 얘기"/>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="4">
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="좋음~4400µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round0"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="보통~9400µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round1"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="나쁨~12400µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round2"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="매우나쁨12400µg/㎥~"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round3"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -417,11 +464,56 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="오존 얘기"/>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="4">
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="좋음0~60µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round0"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="보통60~100µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round1"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_marginRight="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="나쁨100~140µg/㎥"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round2"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:gravity="center"
+                                android:text="매우나쁨140µg/㎥~"
+                                android:textColor="@color/white"
+                                android:background="@drawable/air_round3"
+                                android:textSize="11dp"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-
-
             <!-- ForeCast -->
             <LinearLayout
                 android:id="@+id/foreCast"
