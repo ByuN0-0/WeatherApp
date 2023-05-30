@@ -50,24 +50,13 @@ public class LoadAllData {
             public void onResponse(@NonNull Call<CurrentWeatherResponse> call, @NonNull Response<CurrentWeatherResponse> response) {
                  //api 호출 성공
                 if (response.isSuccessful()) {
-//                    double temperature = response.body().getWeatherData().getTemperature();
-//                    String descriptionString = response.body().getWeatherList().get(0).getDescription();
-//                    String icon = response.body().getWeatherList().get(0).getIcon();
-//                    @SuppressLint("DefaultLocale") String temperatureString = String.format("%.1f", temperature);
-//                    imView.setLocationDescription(descriptionString);
-//                    imView.setTemperatureTextView(temperatureString);
-//                    svWidget.setPresentWeather(descriptionString);
-//                    svWidget.setCurrentIco(icon);
-//                    svWidget.setPresentTemp(temperatureString);
-//                } else{
-//                    System.out.println("Response Fail");
-//                }
-                    double temperature = response.body().getWeatherData().getTemperature(); //Todo
-                    double feelTemp = response.body().getWeatherData().getFeeltemp();
-                    double humidity = response.body().getWeatherData().getHumidity();
-                    double pressure = response.body().getWeatherData().getPressure();
-                    double temp_min = response.body().getWeatherData().getTemp_min();
-                    double temp_max = response.body().getWeatherData().getTemp_max();
+                    CurrentWeatherResponse.WeatherData weatherData = response.body().getWeatherData();
+                    double temperature = weatherData.getTemperature(); //Todo
+                    double feelTemp =weatherData.getFeeltemp();
+                    double humidity = weatherData.getHumidity();
+                    double pressure = weatherData.getPressure();
+                    double temp_min = weatherData.getTemp_min();
+                    double temp_max = weatherData.getTemp_max();
                     double windSpeed = response.body().getWindData().getWindspeed();
                     double windDeg = response.body().getWindData().getWinddeg();
                     double clouds = response.body().getCloudData().getCloud();
@@ -149,10 +138,11 @@ public class LoadAllData {
                     double[] tempList = new double[40];
                     String[] icoList = new String[40];
                     String[] weatherList = new String[40];
+                    List<WeatherForecastResponse.forecastList> forecastlist = response.body().getForecastList();
                     for(int i=0;i<40;i++){
-                        tempList[i]= response.body().getForecastList().get(i).getMain().getTemperature();
-                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
-                        weatherList[i] = response.body().getForecastList().get(i).getWeatherList().get(0).getDescription();
+                        tempList[i]= forecastlist.get(i).getMain().getTemperature();
+                        icoList[i]= forecastlist.get(i).getWeatherList().get(0).getIcon();
+                        weatherList[i] = forecastlist.get(i).getWeatherList().get(0).getDescription();
                     }
 //                    for(int i=0;i<40;i++){
 //                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
@@ -192,11 +182,12 @@ public class LoadAllData {
             public void onResponse(@NonNull Call<AirPollutionResponse> call, @NonNull Response<AirPollutionResponse> response) {
                 // api 호출 성공
                 if (response.isSuccessful()) {
-                    int aqi = response.body().getAirList().get(0).getMain().getAqi();
-                    double CO = response.body().getAirList().get(0).getComp().getCo();
-                    double O3 = response.body().getAirList().get(0).getComp().getO3();
-                    double pm10 = response.body().getAirList().get(0).getComp().getPm10();
-                    double pm2_5 = response.body().getAirList().get(0).getComp().getPm2_5();
+                    AirPollutionResponse.Air air = response.body().getAirList().get(0);
+                    int aqi = air.getMain().getAqi();
+                    double CO = air.getComp().getCo();
+                    double O3 = air.getComp().getO3();
+                    double pm10 = air.getComp().getPm10();
+                    double pm2_5 = air.getComp().getPm2_5();
                     imView.setAirqualityText(straqi(aqi));
                     imView.setCOText(String.format("%.1fμg/m3",CO));
                     imView.setO3Text(String.format("%.1fμg/m3",O3));
@@ -244,6 +235,10 @@ public class LoadAllData {
     }
 
     private void checkRain(String[] weatherlist) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
+        Date curdate = new Date(); // Todo
+        SimpleDateFormat dFormat = new SimpleDateFormat("HH");
+        int currentHour = Integer.parseInt(dFormat.format(curdate));
+        int n = (24-currentHour)/3+1;
         boolean rain = false;
         boolean snow = false;
         if(currentWeatherIcon.equals("09d") || currentWeatherIcon.equals("10d") || currentWeatherIcon.equals("11d") || currentWeatherIcon.equals("09n") || currentWeatherIcon.equals("10n") || currentWeatherIcon.equals("11n")) {
@@ -252,7 +247,7 @@ public class LoadAllData {
         if (currentWeatherIcon.equals("13d") || currentWeatherIcon.equals("13n")){
             snow = true;
         }
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < n; i++) {
             if (weatherlist[i].equals("09d") || weatherlist[i].equals("10d") || weatherlist[i].equals("11d") || weatherlist[i].equals("09n") || weatherlist[i].equals("10n") || weatherlist[i].equals("11n")) {
                 rain = true;
             }
@@ -264,17 +259,17 @@ public class LoadAllData {
         if (rain || snow) {
             if (rain && snow) {
 //                forecastText.setText("오늘 한때 눈이나 비가 예상됩니다.");
-                initMainView.setForecastText("24시간 이내에 눈이나 비가 예상됩니다.",0);
+                initMainView.setForecastText("오늘 눈이나 비가 예상됩니다.",0);
             } else if (rain) {
 //                forecastText.setText("오늘 한때 비가 예상됩니다.");
-                initMainView.setForecastText("24시간 이내에 비가 예상됩니다.",1);
+                initMainView.setForecastText("오늘 비가 예상됩니다.",1);
             } else {
 //                forecastText.setText("오늘 한때 눈이 예상됩니다.");
-                initMainView.setForecastText("24시간 이내에 한때 눈이 예상됩니다.",2);
+                initMainView.setForecastText("오늘 눈이 예상됩니다.",2);
             }
         } else {
 //            forecastText.setText("오늘은 눈이나 비가 예상되지 않습니다.");
-            initMainView.setForecastText("향후 24시간 내에 눈이나 비가 예상되지 않습니다.",3);
+            initMainView.setForecastText("오늘 내에 눈이나 비가 예상되지 않습니다.",3);
         }
     }
 
