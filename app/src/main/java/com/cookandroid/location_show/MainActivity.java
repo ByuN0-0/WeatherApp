@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,30 +37,35 @@ import com.github.matteobattilana.weather.WeatherView;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
+    double latitude;
+    double longitude;
     private TextView locationLatitude;
     private TextView locationLongitude;
     public static boolean LocationLoadComplete, WeatherDataLoadComplete, WeatherForecastDataLoadComplete, AirPollutionDataLoadComplete, GeoDataLoadComplete;
-    private static TransitionDrawable transition;      //Todo
-    private FrameLayout MainFrame;      //Todo
-    private int TimeCount = 0;      //Todo
-    private ImageView ImView;       //Todo
-    static Animation animationMoveAlpha;           //Todo
+    private static TransitionDrawable transition;
+    private FrameLayout MainFrame;
+    private int TimeCount = 0;
+    private int apiCount = 0; //Todo
+    private int apiTimeCount = 0;
+    private int apiCount1 = 0;
+    private ImageView ImView;
+    static Animation animationMoveAlpha;
     private static final Integer[] alpha_draw = { R.drawable.alpha_draw0, R.drawable.alpha_draw1, R.drawable.alpha_draw2, R.drawable.alpha_draw3,
             R.drawable.alpha_draw4, R.drawable.alpha_draw5, R.drawable.alpha_draw6, R.drawable.alpha_draw7, R.drawable.alpha_draw8};        //Todo
-    private static int[] bgTest;          //Todo
-    private static int bgTmp;       //Todo
+    private static int[] bgTest;
+    private static int bgTmp;
     private static int bgTmp1;
     private int single = 0;
-    private int single1 = 0;        //Todo
+    private int single1 = 0;
     private int single2 = 0;
     private int single3 = 0;
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat Ct = new SimpleDateFormat("HH");          //Todo
+    SimpleDateFormat Ct = new SimpleDateFormat("HH");
     @SuppressLint("SimpleDateFormat")
-    SimpleDateFormat Ct1 = new SimpleDateFormat("mm");          //Todo
-    String CtSum;       //Todo
-    Integer CurrentTime;        //Todo
-    Integer CurrentMinute;       //Todo
+    SimpleDateFormat Ct1 = new SimpleDateFormat("mm");
+    String CtSum;
+    Integer CurrentTime;
+    Integer CurrentMinute;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast", "SimpleDateFormat"})
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
@@ -73,6 +79,8 @@ public class MainActivity extends TabActivity {
     private scrollViewinit svWidget;
     private initMainView init;
     private LoadAllData allData;
+    @SuppressLint("WrongViewCast")
+    public WeatherView weatherView;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "SetTextI18n"})
     @Override
@@ -88,23 +96,22 @@ public class MainActivity extends TabActivity {
         locationLatitude = findViewById(R.id.location_latitude); //위도
         locationLongitude = findViewById(R.id.location_longitude); //경도
 
-        DemonTime = (TextView) findViewById(R.id.t1);
+        DemonTime = findViewById(R.id.t1);
 
-        MainFrame = (FrameLayout) findViewById(android.R.id.tabcontent);        //Todo
-        MainFrame.setBackgroundResource(R.drawable.alpha_draw0);            //Todo
-        transition = (TransitionDrawable) MainFrame.getBackground();        //Todo
+        MainFrame = findViewById(android.R.id.tabcontent);
+        MainFrame.setBackgroundResource(R.drawable.alpha_draw0);
+        transition = (TransitionDrawable) MainFrame.getBackground();
 
-        @SuppressLint("WrongViewCast")      //Todo
-        WeatherView weatherView = findViewById(R.id.weather_view);      //Todo
-//        weatherView.setEmissionRate(60f);       //떨어지는 개수의 정도     //Todo
-        weatherView.setFadeOutPercent(10000f);         //입자 선명도         //Todo
-        weatherView.setWeatherData(PrecipType.RAIN);        //날씨 설정         //Todo
+        weatherView = findViewById(R.id.weather_view);
+//        weatherView.setEmissionRate(60f);       //떨어지는 개수의 정도
+        weatherView.setFadeOutPercent(10000f);         //입자 선명도
+        weatherView.setWeatherData(PrecipType.RAIN);        //날씨 설정
         //PrecipType precip = PrecipType.CLEAR;         //맑음 설정하려면 setWeatherData에 이 값을 매개 변수로 전달       //Todo
 
-//        ImView = (ImageView) findViewById(R.id.ImView);     //Todo
-//        ImView.setTranslationX(1200);       //오른쪽 상단의 좌표. 만약 500이면 가운데임     Todo
-//        animationMoveAlpha = AnimationUtils.loadAnimation(this, R.anim.falling_star);       //Todo
-//        ImView.startAnimation(animationMoveAlpha);      //Todo
+//        ImView = (ImageView) findViewById(R.id.ImView);
+//        ImView.setTranslationX(1200);       //오른쪽 상단의 좌표. 만약 500이면 가운데임
+//        animationMoveAlpha = AnimationUtils.loadAnimation(this, R.anim.falling_star);
+//        ImView.startAnimation(animationMoveAlpha);
         Date dt = new Date();
         String CtSt = Ct.format(dt);
         CurrentTime = Integer.parseInt(CtSt);
@@ -130,21 +137,21 @@ public class MainActivity extends TabActivity {
             finish();
         } else{
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            //double longitude = location.getLongitude();
-            //double latitude = location.getLatitude();
-            double latitude = 37.6168305;
-            double longitude = 127.105532;
+            //longitude = location.getLongitude();
+            //latitude = location.getLatitude();
+            latitude = 37.6168305;
+            longitude = 127.105532;
 
             locationLatitude.setText("위도" + latitude);
             locationLongitude.setText("경도" + longitude);
-            System.out.println(latitude);           //Todo
-            System.out.println(longitude);          //Todo
-            LocationLoadComplete = true;        //Todo 이 부분 바뀜
-
-            allData.loadWeatherData(latitude, longitude, svWidget, init);
-            allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this);
-            allData.loadAirPollutionData(latitude, longitude, init);
-            allData.loadGeoData(latitude, longitude, init);
+            System.out.println(latitude);
+            System.out.println(longitude);
+            LocationLoadComplete = true;
+            if(apiCount<5) {  //Todo 이 부분 바꿈
+                apiCount++;
+                loadApiData(latitude,longitude);
+                System.out.println("여기서 api호출함! 33");
+            }
 
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
             lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1, gpsLocationListener);
@@ -174,13 +181,13 @@ public class MainActivity extends TabActivity {
 //            double altitude = location.getAltitude();
             //double longitude = location.getLongitude();
             //double latitude = location.getLatitude();
-            double latitude = 37.6168305;
-            double longitude = 127.105532;
-            allData.loadWeatherData(latitude, longitude, svWidget, init);
-            allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this);
-            allData.loadAirPollutionData(latitude, longitude, init);
-            allData.loadGeoData(latitude, longitude, init);
-
+            latitude = 37.6168305;
+            longitude = 127.105532;
+            if(apiCount<5) {  //Todo 이 부분 바꿈
+                apiCount++;
+                loadApiData(latitude,longitude);
+                System.out.println("여기서 api호출함! 22");
+            }
         }
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
@@ -200,6 +207,21 @@ public class MainActivity extends TabActivity {
                 DemonTime.setText(dformat.format(d));
 ///////////////////////////////////////////////////////여기서부터///////////////////////////////////////////////////////////Todo
                 TimeCount++;
+                apiTimeCount++; //Todo
+                if(apiTimeCount==60){
+                    apiCount=0;
+                    apiTimeCount=0;
+                }
+                Calendar calendar = Calendar.getInstance();
+                int minute = calendar.get(Calendar.MINUTE);
+                if(minute == 0 && apiCount1 == 0) {
+                    apiCount1++;
+                    loadApiData(latitude,longitude);
+                    System.out.println("여기서 api호출함!");
+                }
+                if(minute != 0 && apiCount != 0){
+                    apiCount1=0;
+                }
                 System.out.println(TimeCount);
 
                 if(single3 == 0){
@@ -353,6 +375,12 @@ public class MainActivity extends TabActivity {
             }
         };
         TM.schedule(TM_T, 1000, 1000);
+    }
+    private void loadApiData(double latitude, double longitude){
+        allData.loadWeatherData(latitude, longitude, svWidget, init);
+        allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this);
+        allData.loadAirPollutionData(latitude, longitude, init);
+        allData.loadGeoData(latitude, longitude, init);
     }
 
 //    public static void BackInit(int test[]){

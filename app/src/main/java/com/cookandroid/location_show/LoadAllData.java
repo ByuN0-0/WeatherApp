@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
+import com.github.matteobattilana.weather.PrecipType;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -147,7 +149,7 @@ public class LoadAllData {
 //                    for(int i=0;i<40;i++){
 //                        icoList[i]= response.body().getForecastList().get(i).getWeatherList().get(0).getIcon();
 //                    }
-                    checkRain(icoList);
+                    checkRain(icoList,mainActivity);
                     svWidget.setTempList(tempList);
                     svWidget.setIcoList(icoList);
                     svWidget.setWeatherList(weatherList);
@@ -193,8 +195,6 @@ public class LoadAllData {
                     imView.setO3Text(String.format("%.1fμg/m3",O3));
                     imView.setPm10Text(String.format("%.1fμg/m3",pm10));
                     imView.setPm2_5Text(String.format("%.1fμg/m3",pm2_5));
-//                    test1.setText(Integer.toString(aqi));
-
                 }
             }
             @Override
@@ -234,7 +234,7 @@ public class LoadAllData {
         });
     }
 
-    private void checkRain(String[] weatherlist) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
+    private void checkRain(String[] weatherlist, MainActivity mainActivity) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
         Date curdate = new Date(); // Todo
         SimpleDateFormat dFormat = new SimpleDateFormat("HH");
         int currentHour = Integer.parseInt(dFormat.format(curdate));
@@ -243,9 +243,14 @@ public class LoadAllData {
         boolean snow = false;
         if(currentWeatherIcon.equals("09d") || currentWeatherIcon.equals("10d") || currentWeatherIcon.equals("11d") || currentWeatherIcon.equals("09n") || currentWeatherIcon.equals("10n") || currentWeatherIcon.equals("11n")) {
             rain = true;
+            mainActivity.weatherView.setWeatherData(PrecipType.RAIN);
         }
         if (currentWeatherIcon.equals("13d") || currentWeatherIcon.equals("13n")){
             snow = true;
+            mainActivity.weatherView.setWeatherData(PrecipType.SNOW);
+        }
+        if(!(rain || snow)){
+            mainActivity.weatherView.setWeatherData(PrecipType.CLEAR);
         }
         for (int i = 0; i < n; i++) {
             if (weatherlist[i].equals("09d") || weatherlist[i].equals("10d") || weatherlist[i].equals("11d") || weatherlist[i].equals("09n") || weatherlist[i].equals("10n") || weatherlist[i].equals("11n")) {
