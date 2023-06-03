@@ -93,16 +93,8 @@ public class initMainView {
     public void setRainAmountText(String rainAmount){
         this.rainAmountText.setText("지난 1시간 강수량은 "+rainAmount+"mm입니다.");
     }
-    public static void setForecastText(String s, int index){
-        if(index == 0){
-            forecastText.setText(s);
-        } else if(index == 1){
-            forecastText.setText(s);
-        } else if(index == 2){
-            forecastText.setText(s);
-        } else if(index == 3){
-            forecastText.setText(s);
-        }
+    public static void setForecastText(String s){
+        forecastText.setText(s);
     }
     @SuppressLint("SetTextI18n")
     public void setAirqualityText(String aqi){

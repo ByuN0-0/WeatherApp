@@ -1,5 +1,5 @@
 package com.cookandroid.location_show;
-
+// 현재 안쓰는 클래스
 import android.graphics.drawable.Drawable;
 import android.widget.TextView;
 

@@ -404,19 +404,23 @@ public class scrollViewinit {
             scRoll.addView(L);
     }
     public void loadImage(TextView tv, String iconUrl){
-        String url = "https://openweathermap.org/img/w/"+iconUrl+".png";
+        String icon = "a"+iconUrl;
+        int resourceId = tv.getResources().getIdentifier(icon, "drawable", tv.getContext().getPackageName());
         tv.setText("");
-        Glide.with(tv.getContext()).load(url).into(new CustomTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                tv.setBackground(resource);
-            }
-
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-            }
-        });
+        tv.setBackgroundResource(resourceId);
+//        String url = "https://openweathermap.org/img/w/"+iconUrl+".png";
+//        tv.setText("");
+//        Glide.with(tv.getContext()).load(url).into(new CustomTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                tv.setBackground(resource);
+//            }
+//
+//            @Override
+//            public void onLoadCleared(@Nullable Drawable placeholder) {
+//
+//            }
+//        });
         tv.setWidth(150);
         tv.setHeight(150);
     }

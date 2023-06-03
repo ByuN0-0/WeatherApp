@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -87,6 +88,17 @@ public class MainActivity extends TabActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final Intent notificationIntent = new Intent(this, MainActivity.class);
+
+        String apiKey = null;
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(
+                    getPackageName(), PackageManager.GET_META_DATA);
+            apiKey = appInfo.metaData.getString("com.example.apikey");
+            // API 키를 사용하여 외부 API 호출
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
         notificationIntent.setAction(Intent.ACTION_MAIN);
         notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -118,8 +130,8 @@ public class MainActivity extends TabActivity {
         String Ctst1 = Ct1.format(dt);
         CurrentMinute = Integer.parseInt(Ctst1);
         CtSum = CtSt + Ctst1;
-        System.out.println("-------------------------현재 시간 : "+CurrentTime);
-        System.out.println("-------------------------현재 분 : "+CurrentMinute);
+        System.out.println("-------------------------현재 시간 : " + CurrentTime);
+        System.out.println("-------------------------현재 분 : " + CurrentMinute);
 
 
         ShowTimeMethod();
@@ -127,6 +139,7 @@ public class MainActivity extends TabActivity {
         init.initView(this);
 
         allData = LoadAllData.getInstance();
+        allData.setApiKey(apiKey);
 
         svWidget = scrollViewinit.getInstance();
 
@@ -135,7 +148,7 @@ public class MainActivity extends TabActivity {
         if (Build.VERSION.SDK_INT < 23 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
                 && (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
             finish();
-        } else{
+        } else {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             //longitude = location.getLongitude();
             //latitude = location.getLatitude();
@@ -147,9 +160,9 @@ public class MainActivity extends TabActivity {
             System.out.println(latitude);
             System.out.println(longitude);
             LocationLoadComplete = true;
-            if(apiCount<5) {  //Todo 이 부분 바꿈
+            if (apiCount < 5) {  //Todo 이 부분 바꿈
                 apiCount++;
-                loadApiData(latitude,longitude);
+                loadApiData(latitude, longitude);
                 System.out.println("여기서 api호출함! 33");
             }
 
@@ -213,7 +226,17 @@ public class MainActivity extends TabActivity {
                     apiTimeCount=0;
                 }
                 Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR);
                 int minute = calendar.get(Calendar.MINUTE);
+                int second = calendar.get(Calendar.SECOND);
+
+                System.out.println("------------------------hour : "+hour);
+                System.out.println("------------------------minute : "+minute);
+                System.out.println("------------------------second : "+second);
+
+                if(hour == 0 && minute == 0 && second == 0){
+                    bgTest = LoadAllData.test;
+                }
                 if(minute == 0 && apiCount1 == 0) {
                     apiCount1++;
                     loadApiData(latitude,longitude);
@@ -239,12 +262,12 @@ public class MainActivity extends TabActivity {
                         System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
                         transition = (TransitionDrawable) MainFrame.getBackground();
-                        bgTmp = bgTest[10] * 60;
-                        transition.startTransition(bgTmp);
-//                    transition.startTransition(bgTest[10] * 60 * 10);
+                        bgTmp = bgTest[10] * 60 ; //초
+                        //transition.startTransition(bgTmp);
+                        transition.startTransition(bgTest[10] * 60 * 1000);
                         System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);
                         TimeCount = 0;
-                        bgTmp = (bgTmp / 1000) + 1;
+                        //bgTmp = (bgTmp / 1000) + 1; //초로 변환
                         System.out.println("--------------------------------------------bgTmp : "+bgTmp);
                         System.out.println("--------------------------------------------일몰 시간 : "+Integer.parseInt(Opacity.sunsetInt));
                         System.out.println("--------------------------------------------일몰 분 : "+Integer.parseInt(Opacity.sunsetInt1));
@@ -318,9 +341,11 @@ public class MainActivity extends TabActivity {
                     }
                     System.out.println("------------------------------------------현재 bgTmp : "+bgTmp);
                     transition = (TransitionDrawable) MainFrame.getBackground();
-                    transition.startTransition(bgTest[bgTmp] * 60);
+                    //transition.startTransition(bgTest[bgTmp] * 60); //1000배속
+                    transition.startTransition(bgTest[bgTmp] * 60 * 1000); // 밀리초 실시간
                     System.out.println("------------------------------------------바뀐 지속시간 : "+bgTest[bgTmp] * 60);
-                    bgTmp = ((bgTest[bgTmp] * 60) / 1000)+1;
+                    bgTmp = bgTest[bgTmp] * 60;
+                    //bgTmp = ((bgTest[bgTmp] * 60) / 1000) + 1; //1000배속
                     TimeCount = 0;
                 }
 ///////////////////////////////////////////////////////여기까지///////////////////////////////////////////////////////////Todo
@@ -364,8 +389,12 @@ public class MainActivity extends TabActivity {
                 System.out.println("대기시간 : "+TimeCnt+"초");
                 if(WeatherDataLoadComplete && WeatherForecastDataLoadComplete && LocationLoadComplete && AirPollutionDataLoadComplete
                         && GeoDataLoadComplete && LoadAllData.test != null){
-                    bgTest = LoadAllData.test;
-                    TimeCount = 0;
+                    if(single2 == 0){
+                        bgTest = LoadAllData.test;
+                        TimeCount = 0;
+                        single2 = 1;
+//                        System.out.println("--------------------------------TimeCount 초기화");
+                    }
                     TimeCnt = 0;
                     TM.cancel();
                     PD.dismiss();

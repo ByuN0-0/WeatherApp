@@ -19,14 +19,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoadAllData {
-    private final String apiKey = "163034e395f4430a30d20336ccc67b22";
+    private String apiKey;
     private final String units = "metric";
     private final String apilang = "kr";
     String currentWeatherIcon;
     private static LoadAllData Instance;
     public static int[] test;
 
-    private LoadAllData(){}
+    private LoadAllData(){
+    }
     public static LoadAllData getInstance(){
         if(Instance == null){
             synchronized (LoadAllData.class){
@@ -35,7 +36,9 @@ public class LoadAllData {
         }
         return Instance;
     }
-
+    public void setApiKey(String _apiKey){
+        apiKey=_apiKey;
+    }
     public void loadWeatherData(double latitude, double longitude, scrollViewinit svWidget, initMainView imView) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
@@ -242,16 +245,16 @@ public class LoadAllData {
         boolean rain = false;
         boolean snow = false;
         if(currentWeatherIcon.equals("09d") || currentWeatherIcon.equals("10d") || currentWeatherIcon.equals("11d") || currentWeatherIcon.equals("09n") || currentWeatherIcon.equals("10n") || currentWeatherIcon.equals("11n")) {
-            rain = true;
             mainActivity.weatherView.setWeatherData(PrecipType.RAIN);
+            initMainView.setForecastText("현재 비가 오고 있습니다.");
+            return ;
         }
         if (currentWeatherIcon.equals("13d") || currentWeatherIcon.equals("13n")){
-            snow = true;
             mainActivity.weatherView.setWeatherData(PrecipType.SNOW);
+            initMainView.setForecastText("현재 눈이 오고 있습니다.");
+            return ;
         }
-        if(!(rain || snow)){
-            mainActivity.weatherView.setWeatherData(PrecipType.CLEAR);
-        }
+        mainActivity.weatherView.setWeatherData(PrecipType.CLEAR);
         for (int i = 0; i < n; i++) {
             if (weatherlist[i].equals("09d") || weatherlist[i].equals("10d") || weatherlist[i].equals("11d") || weatherlist[i].equals("09n") || weatherlist[i].equals("10n") || weatherlist[i].equals("11n")) {
                 rain = true;
@@ -263,18 +266,14 @@ public class LoadAllData {
 
         if (rain || snow) {
             if (rain && snow) {
-//                forecastText.setText("오늘 한때 눈이나 비가 예상됩니다.");
-                initMainView.setForecastText("오늘 눈이나 비가 예상됩니다.",0);
+                initMainView.setForecastText("오늘 눈이나 비가 예상됩니다.");
             } else if (rain) {
-//                forecastText.setText("오늘 한때 비가 예상됩니다.");
-                initMainView.setForecastText("오늘 비가 예상됩니다.",1);
+                initMainView.setForecastText("오늘 비가 예상됩니다.");
             } else {
-//                forecastText.setText("오늘 한때 눈이 예상됩니다.");
-                initMainView.setForecastText("오늘 눈이 예상됩니다.",2);
+                initMainView.setForecastText("오늘 눈이 예상됩니다.");
             }
         } else {
-//            forecastText.setText("오늘은 눈이나 비가 예상되지 않습니다.");
-            initMainView.setForecastText("오늘 내에 눈이나 비가 예상되지 않습니다.",3);
+            initMainView.setForecastText("오늘 내에 눈이나 비가 예상되지 않습니다.");
         }
     }
 

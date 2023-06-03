@@ -41,6 +41,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <meta-data
+            android:name="com.example.apikey"
+            android:value="163034e395f4430a30d20336ccc67b22" />
     </application>
 
 </manifest>
