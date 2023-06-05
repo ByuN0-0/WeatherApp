@@ -32,7 +32,8 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/line"
-                android:id="@+id/ImView"/>
+                android:id="@+id/ImView"
+                tools:ignore="ContentDescription" />
 
             <!-- Weather Now -->
             <LinearLayout
@@ -192,7 +193,7 @@
                         android:textColor="#ffffff"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="미세먼지(PM 10)"/>
+                        android:text="@string/setPM_10state"/>
                     <LinearLayout
                         android:layout_margin="10dp"
                         android:id="@+id/Layout_pm10"
@@ -209,53 +210,58 @@
                             android:textColor="#ffffff"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="pm10얘기"/>
+                            android:text="@string/setPM_10text"/>
                         <LinearLayout
                             android:layout_marginTop="10dp"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_weight="4">
+                            android:layout_weight="4"
+                            tools:ignore="InefficientWeight">
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음0~30µg/㎥"
+                                android:text="@string/_0_30_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="NestedWeights,RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통31~80µg/㎥"
+                                android:text="@string/_31_80_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨81~150µg/㎥"
+                                android:text="@string/_81_150_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨150µg/㎥~"
+                                android:text="@string/_150_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="SpUsage" />
                         </LinearLayout>
 <!--                        <ImageView-->
 <!--                            android:layout_marginRight="10dp"-->
@@ -279,7 +285,7 @@
                         android:textColor="#ffffff"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="미세먼지(PM 2.5)"/>
+                        android:text="@string/setPM_2_5state"/>
                     <LinearLayout
                         android:layout_margin="10dp"
                         android:id="@+id/Layout_pm2_5"
@@ -296,53 +302,58 @@
                             android:textColor="#ffffff"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="pm2.5 얘기"/>
+                            android:text="@string/setPM2_5text"/>
                         <LinearLayout
                             android:layout_marginTop="10dp"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_weight="4">
+                            android:layout_weight="4"
+                            tools:ignore="InefficientWeight">
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음0~15µg/㎥"
+                                android:text="@string/_0_15_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="NestedWeights,RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통16~35µg/㎥"
+                                android:text="@string/_16_35_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨36~75µg/㎥"
+                                android:text="@string/b3675"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨76µg/㎥~"
+                                android:text="@string/_76_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="SpUsage" />
                         </LinearLayout>
 <!--                        <ImageView-->
 <!--                            android:layout_marginRight="10dp"-->
@@ -366,7 +377,7 @@
                         android:textColor="#ffffff"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="일산화탄소"/>
+                        android:text="@string/setCOstate"/>
                     <LinearLayout
                         android:layout_margin="10dp"
                         android:id="@+id/Layout_CO"
@@ -383,53 +394,58 @@
                             android:textColor="#ffffff"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="일산화탄소 얘기"/>
+                            android:text="@string/setCOtext"/>
                         <LinearLayout
                             android:layout_marginTop="10dp"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_weight="4">
+                            android:layout_weight="4"
+                            tools:ignore="InefficientWeight">
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음~4400µg/㎥"
+                                android:text="@string/_4400_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="NestedWeights,RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통~9400µg/㎥"
+                                android:text="@string/n9400"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨~12400µg/㎥"
+                                android:text="@string/_12400_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨12400µg/㎥~"
+                                android:text="@string/vm12400"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="SpUsage" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -446,7 +462,7 @@
                         android:textColor="#ffffff"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="오존"/>
+                        android:text="@string/setO3state"/>
                     <LinearLayout
                         android:layout_margin="10dp"
                         android:id="@+id/Layout_O3"
@@ -463,57 +479,64 @@
                             android:textColor="#ffffff"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="오존 얘기"/>
+                            android:text="@string/setO3text"/>
                         <LinearLayout
                             android:layout_marginTop="10dp"
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_weight="4">
+                            android:layout_weight="4"
+                            tools:ignore="InefficientWeight">
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="좋음0~60µg/㎥"
+                                android:text="@string/_0_60_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round0"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="NestedWeights,RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="보통60~100µg/㎥"
+                                android:text="@string/_60_100_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round1"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_marginRight="5dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="나쁨100~140µg/㎥"
+                                android:text="@string/_100_140_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round2"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="RtlHardcoded,SpUsage" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="20dp"
                                 android:gravity="center"
-                                android:text="매우나쁨140µg/㎥~"
+                                android:text="@string/_140_g"
                                 android:textColor="@color/white"
                                 android:background="@drawable/air_round3"
                                 android:textSize="11dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                tools:ignore="SpUsage" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+
             <!-- ForeCast -->
             <LinearLayout
                 android:id="@+id/foreCast"
@@ -544,11 +567,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <ScrollView
+                    android:scrollbars="none"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    tools:ignore="UselessParent">
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        tools:ignore="ScrollViewSize">
                         <GridLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -569,17 +595,18 @@
                                 android:orientation="horizontal">
                                 <TextView
                                     android:id="@+id/sunset"
-                                    android:text="일몰"
+                                    android:text="@string/SunSet_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center">
+                                    android:gravity="center"
+                                    tools:ignore="TooDeepLayout">
                                 </TextView>
                                 <TextView
                                     android:id="@+id/sunrise"
-                                    android:text="일출"
+                                    android:text="@string/SunRise_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
@@ -603,7 +630,7 @@
                                 >
                                 <TextView
                                     android:id="@+id/windDeg"
-                                    android:text="풍향"
+                                    android:text="@string/WD_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
@@ -612,7 +639,7 @@
                                     android:gravity="center"/>
                                 <TextView
                                     android:id="@+id/windSpeed"
-                                    android:text="풍속"
+                                    android:text="@string/WS_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
@@ -635,13 +662,14 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/rainAmount"
-                                    android:text="강우량"
+                                    android:text="@string/RA_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight" />
                             </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/etc4"
@@ -658,13 +686,14 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/feelTemp"
-                                    android:text="체감온도"
+                                    android:text="@string/TP_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight" />
                             </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/etc5"
@@ -681,13 +710,14 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/humidity"
-                                    android:text="습도"
+                                    android:text="@string/HM_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight" />
 
                             </LinearLayout>
                             <LinearLayout
@@ -705,13 +735,14 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/visibility"
-                                    android:text="가시거리"
+                                    android:text="@string/VD_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight" />
                             </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/etc7"
@@ -728,13 +759,14 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/clouds"
-                                    android:text="흐림도"
+                                    android:text="@string/AP_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight,TooManyViews" />
                             </LinearLayout>
                             <LinearLayout
                                 android:id="@+id/etc8"
@@ -751,23 +783,19 @@
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/pressure"
-                                    android:text="대기압"
+                                    android:text="@string/PR_"
                                     android:layout_height="match_parent"
                                     android:layout_width="match_parent"
                                     android:layout_weight="1"
                                     android:textColor="#ffffff"
                                     android:textSize="20sp"
-                                    android:gravity="center"/>
+                                    android:gravity="center"
+                                    tools:ignore="InefficientWeight" />
                             </LinearLayout>
                         </GridLayout>
                     </RelativeLayout>
                 </ScrollView>
             </LinearLayout>
-<!--            <ImageView-->
-<!--                android:layout_width="50dp"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:src="@drawable/line"-->
-<!--                android:id="@+id/ImView"/>-->
             </com.github.matteobattilana.weather.WeatherView>
         </FrameLayout>
 

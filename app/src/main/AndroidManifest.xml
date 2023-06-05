@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.syu.WeatherApp">
+
 
     <!-- Always include this permission -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
@@ -8,7 +10,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".App"
+        android:name="com.syu.WeatherApp.App"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
@@ -21,7 +23,7 @@
         android:theme="@style/Theme.Location_show"
         tools:targetApi="31">
         <activity
-            android:name=".PrevActiviy"
+            android:name="com.syu.WeatherApp.PrevActiviy"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,7 +35,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.syu.WeatherApp.MainActivity"
             android:exported="true">
 
 
@@ -42,7 +44,7 @@
                 android:value="" />
         </activity>
         <meta-data
-            android:name="com.example.apikey"
+            android:name="com.syu.apikey"
             android:value="163034e395f4430a30d20336ccc67b22" />
     </application>
 

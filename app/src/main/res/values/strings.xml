@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Location_show</string>
+    <string name="app_name">WeatherApp</string>
     <string name="lineSpace">\n\n\n\n\n\n</string>
-    <string name="DemonTime">aMpM 00:00:00</string>
+    <string name="DemonTime">-- --:--:--</string>
     <string name="setLatitude">Latitude default text</string>
     <string name="setLongitude">Longitude default text</string>
     <string name="setTemperature">temperature default text</string>
@@ -17,4 +17,30 @@
     <string name="setPM_10text">PM_10 Text</string>
     <string name="setPM_2_5state">미세먼지(PM 2.5)</string>
     <string name="setPM2_5text">PM_2.5 Text</string>
+    <string name="_0_30_g">좋음(0~30µg/㎥)</string>
+    <string name="_31_80_g">보통(31~80µg/㎥)</string>
+    <string name="_81_150_g">나쁨(81~150µg/㎥)</string>
+    <string name="_150_g">매우나쁨(150µg/㎥~)</string>
+    <string name="_0_15_g">좋음(0~15µg/㎥)</string>
+    <string name="_16_35_g">보통(16~35µg/㎥)</string>
+    <string name="b3675">나쁨(36~75µg/㎥)</string>
+    <string name="_76_g">매우나쁨(76µg/㎥~)</string>
+    <string name="_4400_g">좋음~4400µg/㎥</string>
+    <string name="n9400">보통~9400µg/㎥</string>
+    <string name="_12400_g">나쁨~12400µg/㎥</string>
+    <string name="vm12400">매우나쁨12400µg/㎥~</string>
+    <string name="_0_60_g">좋음0~60µg/㎥</string>
+    <string name="_60_100_g">보통60~100µg/㎥</string>
+    <string name="_100_140_g">나쁨100~140µg/㎥</string>
+    <string name="_140_g">매우나쁨140µg/㎥~</string>
+    <string name="SunSet_">일몰</string>
+    <string name="SunRise_">일출</string>
+    <string name="WD_">풍향</string>
+    <string name="WS_">풍속</string>
+    <string name="RA_">강우량</string>
+    <string name="TP_">체감온도</string>
+    <string name="HM_">습도</string>
+    <string name="VD_">가시거리</string>
+    <string name="AP_">흐림도</string>
+    <string name="PR_">대기압</string>
 </resources>
