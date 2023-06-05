@@ -13,8 +13,8 @@ import com.syu.WeatherApp.requestApi.GeoMapApi;
 import com.syu.WeatherApp.requestApi.GeoResponse;
 import com.syu.WeatherApp.requestApi.WFmapApi;
 import com.syu.WeatherApp.requestApi.WeatherForecastResponse;
+import com.syu.WeatherApp.view.InitMainView;
 import com.syu.WeatherApp.view.ScrollViewinit;
-import com.syu.WeatherApp.view.initMainView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +51,7 @@ public class LoadAllData {
         apiKey=_apiKey;
     }
 
-    public void loadWeatherData(double latitude, double longitude, ScrollViewinit svWidget, initMainView imView) {
+    public void loadWeatherData(double latitude, double longitude, ScrollViewinit svWidget, InitMainView imView) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -125,7 +125,7 @@ public class LoadAllData {
                     svWidget.setCurrentIco(currentWeatherIcon);
                     svWidget.setPresentTemp(temperatureString);
                 } else{
-                    System.out.println("Response Fail");
+                    System.out.println("current weather Response Fail");
                 }
             }
 
@@ -162,9 +162,11 @@ public class LoadAllData {
                     svWidget.setTempList(tempList);
                     svWidget.setIcoList(icoList);
                     svWidget.setWeatherList(weatherList);
-                    svWidget.TimeWeatherReload(mainActivity, initMainView.getscRollTimeWeather());
-                    svWidget.DayWeatherReload(mainActivity, initMainView.getscRollDayWeather());
+                    svWidget.TimeWeatherReload(mainActivity, InitMainView.getscRollTimeWeather());
+                    svWidget.DayWeatherReload(mainActivity, InitMainView.getscRollDayWeather());
                     svWidget.initView();
+                }else{
+                    System.out.println("forecast weather Response Fail");
                 }
             }
 
@@ -177,7 +179,7 @@ public class LoadAllData {
             }
         });
     }
-    public void loadAirPollutionData(double latitude, double longitude, initMainView imView){
+    public void loadAirPollutionData(double latitude, double longitude, InitMainView imView){
         Retrofit retroAPapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -201,6 +203,8 @@ public class LoadAllData {
                     imView.setO3Text(String.format("%.1fμg/m3",O3));
                     imView.setPm10Text(String.format("%.1fμg/m3",pm10));
                     imView.setPm2_5Text(String.format("%.1fμg/m3",pm2_5));
+                } else{
+                    System.out.println("air pollution Response Fail");
                 }
             }
             @Override
@@ -216,7 +220,7 @@ public class LoadAllData {
         });
     }
 
-    public void loadGeoData(double latitude, double longitude, initMainView imView) {
+    public void loadGeoData(double latitude, double longitude, InitMainView imView) {
         Retrofit retroGeoapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/geo/1.0/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -230,6 +234,8 @@ public class LoadAllData {
                 if (response.isSuccessful()) {
                     String koloc = response.body().get(0).getLocalName().getLocal_ko();
                     imView.setLocationText(koloc);
+                }else{
+                    System.out.println("geo Response Fail");
                 }
             }
 
@@ -249,13 +255,13 @@ public class LoadAllData {
         boolean snow = false;
         if(currentWeatherIcon.equals("09d") || currentWeatherIcon.equals("10d") || currentWeatherIcon.equals("11d") || currentWeatherIcon.equals("09n") || currentWeatherIcon.equals("10n") || currentWeatherIcon.equals("11n")) {
             mainActivity.weatherView.setWeatherData(PrecipType.RAIN);
-            initMainView.setForecastText("현재 비가 오고 있습니다.");
+            InitMainView.setForecastText("현재 비가 오고 있습니다.");
             mainActivity.StarState = false;
             return;
         }
         if(currentWeatherIcon.equals("13d") || currentWeatherIcon.equals("13n")){
             mainActivity.weatherView.setWeatherData(PrecipType.SNOW);
-            initMainView.setForecastText("현재 눈이 오고 있습니다.");
+            InitMainView.setForecastText("현재 눈이 오고 있습니다.");
             mainActivity.StarState = false;
             return;
         }
@@ -278,14 +284,14 @@ public class LoadAllData {
 
         if (rain || snow) {
             if (rain && snow) {
-                initMainView.setForecastText("오늘 눈이나 비가 예상됩니다.");
+                InitMainView.setForecastText("오늘 눈이나 비가 예상됩니다.");
             } else if (rain) {
-                initMainView.setForecastText("오늘 비가 예상됩니다.");
+                InitMainView.setForecastText("오늘 비가 예상됩니다.");
             } else {
-                initMainView.setForecastText("오늘 눈이 예상됩니다.");
+                InitMainView.setForecastText("오늘 눈이 예상됩니다.");
             }
         } else {
-            initMainView.setForecastText("오늘 내에 눈이나 비가 예상되지 않습니다.");
+            InitMainView.setForecastText("오늘 내에 눈이나 비가 예상되지 않습니다.");
         }
     }
 

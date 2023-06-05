@@ -44,7 +44,7 @@
                 android:value="" />
         </activity>
         <meta-data
-            android:name="com.syu.apikey"
+            android:name="com.example.apikey"
             android:value="163034e395f4430a30d20336ccc67b22" />
     </application>
 

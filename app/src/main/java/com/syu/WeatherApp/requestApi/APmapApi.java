@@ -1,7 +1,5 @@
 package com.syu.WeatherApp.requestApi;
 
-import com.syu.WeatherApp.requestApi.AirPollutionResponse;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

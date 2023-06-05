@@ -11,11 +11,11 @@ import com.syu.WeatherApp.MainActivity;
 import com.syu.WeatherApp.R;
 
 @SuppressWarnings("deprecation")
-public class initMainView {
+public class InitMainView {
     @SuppressLint("StaticFieldLeak")
-    private static initMainView Instance;
+    private static InitMainView Instance;
 
-    private initMainView(){}
+    private InitMainView(){}
 
     LinearLayout[] Lay_Inside;
     TextView[] TV;
@@ -45,10 +45,10 @@ public class initMainView {
     @SuppressLint("StaticFieldLeak")
     private static LinearLayout scRollDayWeather;
 
-    public static initMainView getInstance(){
+    public static InitMainView getInstance(){
         if(Instance == null){
-            synchronized (initMainView.class){
-                Instance = new initMainView();
+            synchronized (InitMainView.class){
+                Instance = new InitMainView();
             }
         }
         return Instance;

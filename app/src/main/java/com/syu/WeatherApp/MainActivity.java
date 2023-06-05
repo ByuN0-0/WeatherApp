@@ -1,3 +1,7 @@
+/*
+MainActivity.java
+
+ */
 package com.syu.WeatherApp;
 
 import androidx.annotation.NonNull;
@@ -38,9 +42,9 @@ import java.util.TimerTask;
 
 import com.github.matteobattilana.weather.PrecipType;
 import com.github.matteobattilana.weather.WeatherView;
+import com.syu.WeatherApp.view.InitMainView;
 import com.syu.WeatherApp.view.ProgressDialog;
 import com.syu.WeatherApp.view.ScrollViewinit;
-import com.syu.WeatherApp.view.initMainView;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
@@ -86,7 +90,7 @@ public class MainActivity extends TabActivity {
     public Timer TM;
 
     private ScrollViewinit svWidget;
-    private initMainView init;
+    private InitMainView init;
     private LoadAllData allData;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "SetTextI18n"})
@@ -144,7 +148,7 @@ public class MainActivity extends TabActivity {
 
 
         ShowTimeMethod();
-        init = initMainView.getInstance();
+        init = InitMainView.getInstance();
         init.initView(this);
 
         allData = LoadAllData.getInstance();
@@ -161,6 +165,8 @@ public class MainActivity extends TabActivity {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             longitude = location.getLongitude();
             latitude = location.getLatitude();
+            //longitude = 127.105532;
+            //latitude = 37.6168305;
 
             locationLatitude.setText("위도" + latitude);
             locationLongitude.setText("경도" + longitude);
@@ -188,6 +194,8 @@ public class MainActivity extends TabActivity {
 //            double altitude = location.getAltitude();
             longitude = location.getLongitude();
             latitude = location.getLatitude();
+            //longitude = 127.105532;
+            //latitude = 37.6168305;
 
             if(apiCount<5) {
                 apiCount++;
@@ -240,7 +248,7 @@ public class MainActivity extends TabActivity {
                 System.out.println(TimeCount);          //Todo
 //                System.out.println("------------------------------------별 상태 : "+StarState);      //Todo
 
-                if(second % 10 == 5 && (bgTest[11] == 8 || bgTest[11] == 0) && TimeCount >= 10 && StarState){
+                if(bgTest != null && second % 10 == 5 && (bgTest[11] == 8 || bgTest[11] == 0) && TimeCount >= 10 && StarState){
                     ImView.startAnimation(animationMoveAlpha);
                 }
 
