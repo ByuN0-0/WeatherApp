@@ -1,6 +1,11 @@
 /*
 MainActivity.java
+에뮬레이터 테스트 환경시 line 166, 197부분 수정
+2023-06-05 수정
 
+개발
+2019101008 한준희
+2019101012 황비연
  */
 package com.syu.WeatherApp;
 
@@ -44,7 +49,7 @@ import com.github.matteobattilana.weather.PrecipType;
 import com.github.matteobattilana.weather.WeatherView;
 import com.syu.WeatherApp.view.InitMainView;
 import com.syu.WeatherApp.view.ProgressDialog;
-import com.syu.WeatherApp.view.ScrollViewinit;
+import com.syu.WeatherApp.view.ScrollViewInit;
 
 @SuppressWarnings("deprecation")
 public class MainActivity extends TabActivity {
@@ -78,7 +83,7 @@ public class MainActivity extends TabActivity {
     private double longitude;
     private double latitude;
     int apiCount1 = 0;
-    public boolean StarState = true;            //Todo
+    public boolean StarState = true;
 
     @SuppressLint({"MissingInflatedId", "deprecation", "WrongViewCast", "SimpleDateFormat"})
     SimpleDateFormat dformat = new SimpleDateFormat("aa hh:mm:ss");
@@ -89,7 +94,7 @@ public class MainActivity extends TabActivity {
     public ProgressDialog PD;
     public Timer TM;
 
-    private ScrollViewinit svWidget;
+    private ScrollViewInit svWidget;
     private InitMainView init;
     private LoadAllData allData;
 
@@ -135,7 +140,7 @@ public class MainActivity extends TabActivity {
         ImView = (ImageView) findViewById(R.id.ImView);
         ImView.setTranslationX(1200);       //오른쪽 상단의 좌표. 만약 500이면 가운데임
         animationMoveAlpha = AnimationUtils.loadAnimation(this, R.anim.falling_star);
-//        ImView.startAnimation(animationMoveAlpha);      //Todo
+//        ImView.startAnimation(animationMoveAlpha);
 
         Date dt = new Date();
         String CtSt = Ct.format(dt);
@@ -143,8 +148,8 @@ public class MainActivity extends TabActivity {
         String Ctst1 = Ct1.format(dt);
         CurrentMinute = Integer.parseInt(Ctst1);
         CtSum = CtSt + Ctst1;
-        System.out.println("-------------------------현재 시간 : "+CurrentTime);            //Todo
-        System.out.println("-------------------------현재 분 : "+CurrentMinute);           //Todo
+        System.out.println("-------------------------현재 시간 : "+CurrentTime);
+        System.out.println("-------------------------현재 분 : "+CurrentMinute);
 
 
         ShowTimeMethod();
@@ -154,7 +159,7 @@ public class MainActivity extends TabActivity {
         allData = LoadAllData.getInstance();
         allData.setApiKey(apiKey);
 
-        svWidget = ScrollViewinit.getInstance();
+        svWidget = ScrollViewInit.getInstance();
 
         final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -165,13 +170,13 @@ public class MainActivity extends TabActivity {
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            //longitude = 127.105532;
+            //longitude = 127.105532; //Todo 에뮬레이터 에러 때문에 활성화 해야하는 부분
             //latitude = 37.6168305;
 
             locationLatitude.setText("위도" + latitude);
             locationLongitude.setText("경도" + longitude);
-            System.out.println(latitude);          //Todo
-            System.out.println(longitude);          //Todo
+            System.out.println(latitude);
+            System.out.println(longitude);
             LocationLoadComplete = true;
 
             if(apiCount<5) {
@@ -180,7 +185,7 @@ public class MainActivity extends TabActivity {
                 allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this);
                 allData.loadAirPollutionData(latitude, longitude, init);
                 allData.loadGeoData(latitude, longitude, init);
-                System.out.println("처음 위치에 대한 api호출");          //Todo
+                System.out.println("처음 위치에 대한 api호출");
             }
 
             lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, gpsLocationListener);
@@ -194,7 +199,7 @@ public class MainActivity extends TabActivity {
 //            double altitude = location.getAltitude();
             longitude = location.getLongitude();
             latitude = location.getLatitude();
-            //longitude = 127.105532;
+            //longitude = 127.105532; //Todo 에뮬레이터 에러 때문에 활성화 해야하는 부분
             //latitude = 37.6168305;
 
             if(apiCount<5) {
@@ -203,7 +208,7 @@ public class MainActivity extends TabActivity {
                 allData.loadWeatherForecastData(latitude, longitude, svWidget, MainActivity.this);
                 allData.loadAirPollutionData(latitude, longitude, init);
                 allData.loadGeoData(latitude, longitude, init);
-                System.out.println("바뀐 위치에 대한 api호출");          //Todo
+                System.out.println("바뀐 위치에 대한 api호출");
             }
 
         }
@@ -231,7 +236,7 @@ public class MainActivity extends TabActivity {
                 int hour = calendar.get(Calendar.HOUR);
                 int minute = calendar.get(Calendar.MINUTE);
                 int second = calendar.get(Calendar.SECOND);
-                System.out.println("--------------------------"+hour+":"+minute+":"+second+"--------------------------");       //Todo
+                System.out.println("--------------------------"+hour+":"+minute+":"+second+"--------------------------");
 
                 if(hour == 0 && minute == 0 && second == 0){
                     bgTest = LoadAllData.test;
@@ -245,8 +250,8 @@ public class MainActivity extends TabActivity {
                 }
 
                 TimeCount++;
-                System.out.println(TimeCount);          //Todo
-//                System.out.println("------------------------------------별 상태 : "+StarState);      //Todo
+                System.out.println(TimeCount);
+//                System.out.println("------------------------------------별 상태 : "+StarState);
 
                 if(bgTest != null && second % 10 == 5 && (bgTest[11] == 8 || bgTest[11] == 0) && TimeCount >= 10 && StarState){
                     ImView.startAnimation(animationMoveAlpha);
@@ -264,35 +269,35 @@ public class MainActivity extends TabActivity {
                         single3 = 0;
                         TimeCount--;
                     } else {
-                        System.out.println("---------------------------------------처음 출력");          //Todo
-                        System.out.println("---------------------------------------일출 : "+Opacity.sunrise);          //Todo
-                        System.out.println("---------------------------------------일몰 : "+Opacity.sunset);          //Todo
-                        System.out.println("-------------------------------------------인덱스 : " + bgTest[11]);          //Todo
-                        System.out.println("----------------------------------------------분 : " + bgTest[10]);          //Todo
-                        System.out.println("---------------------------------------밀리초 계산 : " + bgTest[10] * 1000 * 60);          //Todo
-                        System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);          //Todo
+                        System.out.println("---------------------------------------처음 출력");
+                        System.out.println("---------------------------------------일출 : "+Opacity.sunrise);
+                        System.out.println("---------------------------------------일몰 : "+Opacity.sunset);
+                        System.out.println("-------------------------------------------인덱스 : " + bgTest[11]);
+                        System.out.println("----------------------------------------------분 : " + bgTest[10]);
+                        System.out.println("---------------------------------------밀리초 계산 : " + bgTest[10] * 1000 * 60);
+                        System.out.println("------------------------------------------초 계산 : " + bgTest[10] * 60);
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
                         transition = (TransitionDrawable) MainFrame.getBackground();
                         bgTmp = bgTest[10] * 60;
 //                        transition.startTransition(bgTmp);    //초 변환
                         transition.startTransition(bgTest[10] * 60 * 1000);
-                        System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);          //Todo
+                        System.out.println("--------------------------------------현재 지속시간 : "+bgTest[10] * 60);
                         TimeCount = 0;
 //                        bgTmp = (bgTmp / 1000) + 1;           //초 변환
-                        System.out.println("--------------------------------------------bgTmp : "+bgTmp);          //Todo
-                        System.out.println("--------------------------------------------일몰 시간 : "+Integer.parseInt(Opacity.sunsetInt));          //Todo
-                        System.out.println("--------------------------------------------일몰 분 : "+Integer.parseInt(Opacity.sunsetInt1));          //Todo
-                        System.out.println("--------------------------------------------일몰 시간 + 분 : "+Integer.parseInt(Opacity.sunsetSum));          //Todo
-                        System.out.println("--------------------------------------------현재 시간 + 분 : "+Integer.parseInt(CtSum));          //Todo
+                        System.out.println("--------------------------------------------bgTmp : "+bgTmp);
+                        System.out.println("--------------------------------------------일몰 시간 : "+Integer.parseInt(Opacity.sunsetInt));
+                        System.out.println("--------------------------------------------일몰 분 : "+Integer.parseInt(Opacity.sunsetInt1));
+                        System.out.println("--------------------------------------------일몰 시간 + 분 : "+Integer.parseInt(Opacity.sunsetSum));
+                        System.out.println("--------------------------------------------현재 시간 + 분 : "+Integer.parseInt(CtSum));
                     }
                 } else if((bgTest != null) && (TimeCount == bgTmp)){
                     if((CurrentTime <= 23 && Integer.parseInt(CtSum) >= Integer.parseInt(Opacity.sunsetSum)) && single1 == 0){
                         single1++;
                         bgTmp1 = 9;
-//                        System.out.println("-----------------------------------bgTmp가 현재 9");          //Todo
+//                        System.out.println("-----------------------------------bgTmp가 현재 9");
                     }
                     if(bgTmp1 == 9){
-                        System.out.println("-----------------------------------bgTmp가 현재 9");          //Todo
+                        System.out.println("-----------------------------------bgTmp가 현재 9");
                         bgTmp = -1;
                         bgTmp1 = 0;
                         bgTest[11] = 8;
@@ -300,39 +305,39 @@ public class MainActivity extends TabActivity {
                     } else if(bgTest[11] == 8){
                         bgTest[11] = 0;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 0){
                         bgTest[11] = 1;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 1){
                         bgTest[11] = 2;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 2){
                         bgTest[11] = 3;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 3){
                         bgTest[11] = 4;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 4) {
                         bgTest[11] = 5;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : " + bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : " + bgTest[11]);
                     } else if(bgTest[11] == 5){
                         bgTest[11] = 6;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 6){
                         bgTest[11] = 7;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     } else if(bgTest[11] == 7){
                         bgTest[11] = 8;
                         MainFrame.setBackgroundResource(alpha_draw[bgTest[11]]);
-                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);          //Todo
+                        System.out.println("---------------------------------------현재 인덱스 : "+bgTest[11]);
                     }
 
                     if(bgTmp == -1){
@@ -344,18 +349,18 @@ public class MainActivity extends TabActivity {
                         bgTmp1 = bgTmp;
                     }
 
-                    System.out.println("------------------------------------------현재 bgTmp : "+bgTmp);          //Todo
+                    System.out.println("------------------------------------------현재 bgTmp : "+bgTmp);
                     transition = (TransitionDrawable) MainFrame.getBackground();
 //                    transition.startTransition(bgTest[bgTmp] * 60);         //초 변환
                     transition.startTransition(bgTest[bgTmp] * 60 * 1000);
-                    System.out.println("------------------------------------------바뀐 지속시간 : "+bgTest[bgTmp] * 60);          //Todo
+                    System.out.println("------------------------------------------바뀐 지속시간 : "+bgTest[bgTmp] * 60);
                     bgTmp = bgTest[bgTmp] * 60;
 //                    bgTmp = ((bgTest[bgTmp] * 60) / 1000)+1;                //초 변환
                     TimeCount = 0;
                 }
                 if(TimeCnt >= 10 && TimeCnt % 10 == 0){
-                    System.out.println("토스트 실행");          //Todo
-                    Toast.makeText(getApplicationContext(),"인터넷 연결 또는 GPS연결을 확인해주세요.",Toast.LENGTH_LONG).show();          //Todo
+                    System.out.println("토스트 실행");
+                    Toast.makeText(getApplicationContext(),"인터넷 연결 또는 GPS연결을 확인해주세요.",Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -389,20 +394,20 @@ public class MainActivity extends TabActivity {
             @Override
             public void run() {
                 TimeCnt++;
-                System.out.println("대기시간 : "+TimeCnt+"초");          //Todo
+                System.out.println("대기시간 : "+TimeCnt+"초");
                 if(WeatherDataLoadComplete && WeatherForecastDataLoadComplete && LocationLoadComplete && AirPollutionDataLoadComplete
                         && GeoDataLoadComplete && LoadAllData.test != null){
                     if(single2 == 0){
                         bgTest = LoadAllData.test;
                         TimeCount = 0;
                         single2 = 1;
-//                        System.out.println("--------------------------------TimeCount 초기화");          //Todo
+//                        System.out.println("--------------------------------TimeCount 초기화");
                     }
                     TimeCnt = 0;
                     TM.cancel();
                     PD.dismiss();
                     single = 0;
-                    System.out.println("TimeCnt초기화");          //Todo
+                    System.out.println("TimeCnt초기화");
                 }
             }
         };

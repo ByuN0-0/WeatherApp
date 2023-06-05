@@ -1,3 +1,20 @@
+/*
+ScrollViewInit.java
+현재 날씨와 날씨 예보 탭에 존재하는 스크롤 뷰를 생성하고 이미지를 삽입
+
+현재 날씨와 기상 예측 데이터 API가 나뉘어져 있어 스크롤뷰에 0번 index에 해당하는 위젯은 current속성을 가진 변수로 할당
+이후 1번부터 기상 예측 API로 부터 호출받은 데이터를 스크롤뷰에 삽입
+
+set~~() - API로부터 받아온 데이터를 멤버변수에 할당
+ScrollViewInit getInstance() - ScrollViewInit 객체를 초기화 하고 할당
+initView() - API로 부터 받아온 데이터가 잘 수신 되었는지 시스템 메세지로 출력
+TimeWeatherWidgetInit() - 현재 날씨 탭의 24시간 기상정보 스크롤뷰를 생성하고 각각의 위젯에 데이터 삽입
+DayWeatherWidgetInit() - 날씨 예보 탭의 5일간 기상정보 스크롤뷰를 생성하고 각각의 위젯에 데이터 삽입
+TimeWeatherReload() - 본래 존재하던 기본 이미지를 삭제 TimeWeatherWidgetInit()을 호출 
+DayWeatherReload() - 본래 존재하던 기본 이미지를 삭제 DayWeatherWidgetInit()을 호출
+loadImage() - 비어있는 이미지 위젯에 이미지를 할당하는 함수
+ */
+
 package com.syu.WeatherApp.view;
 
 import android.annotation.SuppressLint;
@@ -14,8 +31,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ScrollViewinit {
-    private static ScrollViewinit Instance;
+public class ScrollViewInit {
+    private static ScrollViewInit Instance;
     String presentTime, presentDay, presentWeather;
     LinearLayout[] TimeWeather_Lay, TimeWeather_InsideLay, DayWeather_Lay, DayWeather_InsideLay;
     TextView[] TimeWeather, DayWeather;
@@ -28,7 +45,7 @@ public class ScrollViewinit {
     int DayOfWeekIndex;
     String[] DayOfWeek = {"","일","월","화","수","목","금","토"};
 
-    private ScrollViewinit(){}
+    private ScrollViewInit(){}
     public void setPresentWeather(String pweather){
         presentWeather = pweather;
     }
@@ -48,15 +65,15 @@ public class ScrollViewinit {
         weatherList = weatherlist;
     }
 
-    public static ScrollViewinit getInstance(){
+    public static ScrollViewInit getInstance(){
         if(Instance == null){
-            synchronized (ScrollViewinit.class){
+            synchronized (ScrollViewInit.class){
                 if(weatherList == null && tempList == null && icoList == null){
                     weatherList = new String[40];
                     tempList = new double[40];
                     icoList = new String[40];
                 }
-                Instance = new ScrollViewinit();
+                Instance = new ScrollViewInit();
             }
         }
         return Instance;
@@ -178,7 +195,7 @@ public class ScrollViewinit {
                 DayWeather_Lay[i].setLayoutParams(LPS);
                 DayWeather_Lay[i].addView(DayWeather_InsideLay[j]);
                 DayWeather_Lay[i].setGravity(Gravity.CENTER_VERTICAL);
-                MainActivity.WeatherForecastDataLoadComplete=true;      //Todo 이 부분 바뀜
+                MainActivity.WeatherForecastDataLoadComplete=true;
             }
         }
     }
@@ -306,7 +323,7 @@ public class ScrollViewinit {
                 TimeWeather_Lay[i].setLayoutParams(LPS);
                 TimeWeather_Lay[i].addView(TimeWeather_InsideLay[j]);
                 TimeWeather_Lay[i].setOrientation(LinearLayout.VERTICAL);
-                MainActivity.WeatherDataLoadComplete = true;        //Todo 이 부분 바뀜
+                MainActivity.WeatherDataLoadComplete = true;
             }
         }
     }

@@ -1,3 +1,10 @@
+/*
+PrevActivity.java
+메인액티비티가 나타나기 전에 먼저 보여주는 액티비티
+위치 정보 제공 동의를 받기 이전의 화면을 제공
+위치 정보 제공 동의를 받으면 MainActivity로 넘어감 Todo
+ */
+
 package com.syu.WeatherApp;
 
 import androidx.annotation.NonNull;
@@ -53,14 +60,14 @@ public class PrevActiviy extends AppCompatActivity {
                 startActivity(intent);
 
 
-                // TODO : 퍼미션이 승인되는 경우에 대한 코드
+                //  퍼미션이 승인되는 경우에 대한 코드
 
             }
             // 퍼미션이 승인 거부되면
             else {
                 Log.d("PERMISSION_TAG", "Permission denied");
                 onClickShowAlert(1);
-                // TODO : 퍼미션이 거부되는 경우에 대한 코드
+                //  퍼미션이 거부되는 경우에 대한 코드
             }
         }
     }

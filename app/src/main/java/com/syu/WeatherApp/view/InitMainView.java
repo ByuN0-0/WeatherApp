@@ -1,3 +1,15 @@
+/*
+InitMainView.java
+Initiating Main View
+메인 뷰를 활성화하는 클래스로 InitMainView 객체를 생성하면 메인뷰에 존재하는 모든 위젯을 초기화하고 이후 setText()함수로
+객체에 존재하는 위젯과 뷰를 재설정
+
+set~~Text() - 각각의 위젯의 text를 변경
+initWidget() - 위젯들을 자바 변수와 매핑
+initView() - 각각의 탭에 존재하는 메인화면의 틀을 생성
+
+ */
+
 package com.syu.WeatherApp.view;
 
 import android.annotation.SuppressLint;
@@ -64,7 +76,7 @@ public class InitMainView {
     @SuppressLint("SetTextI18n")
     public void setLocationText(String koloc){
         this.locationText.setText(koloc + " 날씨");       //지역
-        MainActivity.GeoDataLoadComplete=true;      //Todo 이 부분 바뀜
+        MainActivity.GeoDataLoadComplete=true;
     }
     @SuppressLint("SetTextI18n")
     public void setSunsetText(String sunsetText){
@@ -124,7 +136,7 @@ public class InitMainView {
     }
     public void setPm2_5Text(String pm2_5){
         pm2_5Text.setText(pm2_5);
-        MainActivity.AirPollutionDataLoadComplete=true;     //Todo 이 부분 바뀜
+        MainActivity.AirPollutionDataLoadComplete=true;
     }
     public static LinearLayout getscRollTimeWeather(){
         return scRollTimeWeather;

@@ -1,3 +1,17 @@
+/*
+LoadAllData.java
+Retrofit2 객체를 생성하고 api클래스를 호출하여 각각의 변수에 매핑하는 클래스 
+api 호출에 실패하면 각 요소의 else문에서 response fail 시스템 메세지 출력
+
+getInstance() - LoadAllData 객체를 초기화하고 할당
+setApiKey(String _apiKey) - AndroidManifest.xml의 meta-data로 저장된 apikey를 불러와 변수에 할당
+Load~Data() - 각각의 api를 호출하여 값 할당
+checkRain() - api를 통해 불러온 객체로 비,눈이 오는지 안오는지 확인
+straqi() - String AirQualityInformation 대기오염정도를 1~5로 리턴
+getDirection() - 풍향을 String객체로 리턴
+convertUnixTimeToKST() - UnixTime을 한국 표준 시간대로 변환
+ */
+
 package com.syu.WeatherApp;
 
 import android.annotation.SuppressLint;
@@ -14,7 +28,7 @@ import com.syu.WeatherApp.requestApi.GeoResponse;
 import com.syu.WeatherApp.requestApi.WFmapApi;
 import com.syu.WeatherApp.requestApi.WeatherForecastResponse;
 import com.syu.WeatherApp.view.InitMainView;
-import com.syu.WeatherApp.view.ScrollViewinit;
+import com.syu.WeatherApp.view.ScrollViewInit;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +65,7 @@ public class LoadAllData {
         apiKey=_apiKey;
     }
 
-    public void loadWeatherData(double latitude, double longitude, ScrollViewinit svWidget, InitMainView imView) {
+    public void loadWeatherData(double latitude, double longitude, ScrollViewInit svWidget, InitMainView imView) {
         Retrofit retroCurrentWeatherApi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -133,11 +147,11 @@ public class LoadAllData {
             public void onFailure(@NonNull Call<CurrentWeatherResponse> call, @NonNull Throwable t) {
                 // API 호출 실패
                 imView.setTemperatureTextView("api 호출 실패");
-                MainActivity.WeatherDataLoadComplete = false;       //Todo 이 부분 바뀜
+                MainActivity.WeatherDataLoadComplete = false;
             }
         });
     }
-    public void loadWeatherForecastData(double latitude, double longitude, ScrollViewinit svWidget, MainActivity mainActivity){
+    public void loadWeatherForecastData(double latitude, double longitude, ScrollViewInit svWidget, MainActivity mainActivity){
         Retrofit retroWFapi = new Retrofit.Builder()
                 .baseUrl("https://api.openweathermap.org/data/2.5/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -172,7 +186,7 @@ public class LoadAllData {
 
             @Override
             public void onFailure(@NonNull Call<WeatherForecastResponse> call, @NonNull Throwable t) {
-                MainActivity.WeatherForecastDataLoadComplete = false;       //Todo 이 부분 바뀜
+                MainActivity.WeatherForecastDataLoadComplete = false;
                 mainActivity.LoadingMotion();
                 // API 호출 실패
 //                test1.setText("api 호출 실패!!!"+ t.getMessage());
@@ -215,7 +229,7 @@ public class LoadAllData {
                 imView.setO3Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm10Text("api 호출 실패!!!"+ t.getMessage());
                 imView.setPm2_5Text("api 호출 실패!!!"+ t.getMessage());
-                MainActivity.AirPollutionDataLoadComplete = false;       //Todo 이 부분 바뀜
+                MainActivity.AirPollutionDataLoadComplete = false;
             }
         });
     }
@@ -241,13 +255,13 @@ public class LoadAllData {
 
             @Override
             public void onFailure(@NonNull Call<List<GeoResponse>> call, @NonNull Throwable t) {
-                MainActivity.GeoDataLoadComplete = false;       //Todo 이 부분 바뀜
+                MainActivity.GeoDataLoadComplete = false;
             }
         });
     }
 
     private void checkRain(String[] weatherlist, MainActivity mainActivity) { // 0: 눈,비 없음, 1: 비, 2: 눈,  3: 눈,비
-        Date curdate = new Date(); // Todo
+        Date curdate = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dFormat = new SimpleDateFormat("HH");
         int currentHour = Integer.parseInt(dFormat.format(curdate));
         int n = (24-currentHour)/3+1;
