@@ -45,7 +45,6 @@ public class Opacity {
         Date sunsetDate = dFormat.parse(sunset);
         Date currentDate = dFormat.parse(currentTime);
         Date noonDate = dFormat.parse("12시 00분");
-        Date nightDate = dFormat.parse("23시 59분");
         System.out.println("sunriseDate : "+ sunriseDate);
         System.out.println("sunsetDate : "+ sunsetDate);
 
