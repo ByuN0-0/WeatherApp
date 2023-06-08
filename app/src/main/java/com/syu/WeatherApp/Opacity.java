@@ -1,3 +1,12 @@
+/*
+Opacity.java
+배경이미지의 투명도를 설정하기 위해 index 를 리턴하는 클래스
+
+setBackgroundImg() - 현재 시간과 일출 일몰 시간을 바탕으로 이미지 index와 투명도를 리턴
+calculateTime() - 매개변수로 들어온 after time과 before time 간의 시간(분)차이를 리턴
+convertToMinutes() - 매개변수로 들어온 시간이 분으로 환산했을 때 값을 리턴
+ */
+
 package com.syu.WeatherApp;
 
 import android.annotation.SuppressLint;
@@ -61,7 +70,7 @@ public class Opacity {
         time6.setTime(sunsetDate);  //일몰 30분 전
         time7.setTime(sunsetDate);  //일몰
         time8.setTime(sunsetDate);  //일몰 30분 후
-        time9.setTime(nightDate); // 24:00
+        time9.setTime(noonDate); // 24:00
 
         time0.add(Calendar.MINUTE,-30);
         time2.add(Calendar.MINUTE,30);
@@ -69,6 +78,7 @@ public class Opacity {
         time5.add(Calendar.HOUR_OF_DAY, -1);
         time6.add(Calendar.MINUTE, -30);
         time8.add(Calendar.MINUTE, 30);
+        time9.add(Calendar.HOUR_OF_DAY, 12);
 
         Date date0 = time0.getTime();
         Date date1 = time1.getTime();
@@ -174,7 +184,7 @@ public class Opacity {
         int beforeMinutes = convertToMinutes(before);
 
         int timeDifference = afterMinutes - beforeMinutes;
-        if (timeDifference==0){ timeDifference = 60;}
+        if (timeDifference<0) { timeDifference = (60*24) - beforeMinutes; }
         return timeDifference;
     }
     private static int convertToMinutes(String time) {
