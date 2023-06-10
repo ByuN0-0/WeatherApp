@@ -1,6 +1,6 @@
 /*
 MainActivity.java
-에뮬레이터 테스트 환경시 line 166, 197부분 수정
+에뮬레이터 테스트 환경시 line 175, 204부분 수정 ( 에뮬레이터가 위치를 제대로 못 불러올 경우 )
 2023-04-28 프로젝트 시작 날짜
 2023-06-08 최종 수정
 
@@ -170,7 +170,7 @@ public class MainActivity extends TabActivity {
             finish();
         } else{
             Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            longitude = location.getLongitude();
+            longitude = location.getLongitude(); //이 부분을 주석처리 하고
             latitude = location.getLatitude();
             //longitude = 127.105532; //Todo 에뮬레이터 에러 때문에 활성화 해야하는 부분
             //latitude = 37.6168305;
@@ -199,7 +199,7 @@ public class MainActivity extends TabActivity {
         public void onLocationChanged(Location location) {
 //            String provider = location.getProvider();
 //            double altitude = location.getAltitude();
-            longitude = location.getLongitude();
+            longitude = location.getLongitude();  //이 부분을 주석처리하고
             latitude = location.getLatitude();
             //longitude = 127.105532; //Todo 에뮬레이터 에러 때문에 활성화 해야하는 부분
             //latitude = 37.6168305;
